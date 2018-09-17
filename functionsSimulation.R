@@ -26,7 +26,6 @@ mu_posterior = function(mu, sigma2, N, mu0, sigma02, N0, N0_max, number_mcmc, D0
                               number_mcmc = number_mcmc)
   
   return(list(alpha_loss = alpha_loss$alpha_loss, 
-              Zscore = alpha_loss$Zscore, 
               mu_posterior = mu_posterior$mu_post,
               sigma2_posterior = mu_posterior$sigma2_post,
               effective_N0=mu_posterior$effective_N0, 
@@ -87,6 +86,7 @@ Loss_function1 <-function(mu, sigma2, N, mu0, sigma02, N0, number_mcmc, D0, D) {
     
     stat<-ifelse(stat>0,stat,0)
     p_test1<-1-stat 
+    alpha_loss <-alpha_lossf(p_test1)
   
   }
   else if(discfun=="wbord"){
