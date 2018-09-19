@@ -96,10 +96,10 @@ for(i in 1:nsim){
     bias2[i]<-mean(fit$mu_posterior)-mu
   } else {
 
-    res2[i]<-NA
-    sigmaD1[i]<-NA
-    sd.2[i]<-NA
-    bias2[i]<-NA
+    res2[i]<-res1[i]
+    sigmaD1[i]<-sigmaD[i]
+    sd.2[i]<-sd.1[i]
+    bias2[i]<-bias1[i]
     
   }
   
