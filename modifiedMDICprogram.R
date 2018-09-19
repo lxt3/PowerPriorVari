@@ -10,7 +10,7 @@ for(i in 1:nsim){
   if((i/1000)%in%c(1:20)) print(i)
   
   # generate ith D from this mu
-  D<-rnorm(mean=mu, n=n)
+  D<-rnorm(mean=mu, n=n, sd=1)
   
   # set D1 = x% of D
   D1<- D[1:(percent*n)]
@@ -19,7 +19,7 @@ for(i in 1:nsim){
   # estimate alpha0 using D0 and D1
   
   if(external){
-    D1<-rnorm(mu, n=percent*n)
+    D1<-rnorm(mu, n=percent*n, sd=1)
     fit<-mu_posterior(mu      = mean(D1),
                       sigma2   = var(D1),
                       N       = length(D1), 
@@ -72,11 +72,11 @@ for(i in 1:nsim){
 
 
 
-  # drop D1
-  if(percent<1) D2 <- D[-(1:(percent*n))] else D2<-D
+  # drop D1 (if percent<1)
+  if(percent<1) D2 <- D[-(1:(percent*n))] {
   
-  # use alpha0 from above to estimate posterior
-  fit<-mu_posterior2(mu      = mean(D2),
+    # use alpha0 from above to estimate posterior
+    fit<-mu_posterior2(mu      = mean(D2),
                      sigma2   = var(D2),
                      N       = length(D2), 
                      mu0     = mean(D0),
@@ -85,16 +85,23 @@ for(i in 1:nsim){
                      N0_max=length(D0)*max_alpha, 
                      number_mcmc=nmcmc,
                      alpha_loss=alpha_use
-  )
+    )
   
-  res2[i]<-mean(fit$mu_posterior > null)>=prob.H1
-  sigmaD1[i]<-mean(fit$sigma2_posterior)
+    res2[i]<-mean(fit$mu_posterior > null)>=prob.H1
+    sigmaD1[i]<-mean(fit$sigma2_posterior)
   
   
-  sd.2[i]<-sd(fit$mu_posterior)
+    sd.2[i]<-sd(fit$mu_posterior)
   
-  bias2[i]<-mean(fit$mu_posterior)-mu
-  
+    bias2[i]<-mean(fit$mu_posterior)-mu
+  } else {
+
+    res2[i]<-NA
+    sigmaD1[i]<-NA
+    sd.2[i]<-NA
+    bias2[i]<-NA
+    
+  }
   
 }
 
