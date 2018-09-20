@@ -73,7 +73,9 @@ for(i in 1:nsim){
 
 
   # drop D1 (if percent<1)
-  if(percent<1) D2 <- D[-(1:(percent*n))] {
+  if(percent<1) {
+    
+    D2 <- D[-(1:(percent*n))] 
   
     # use alpha0 from above to estimate posterior
     fit<-mu_posterior2(mu      = mean(D2),
