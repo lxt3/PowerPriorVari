@@ -6,17 +6,20 @@ path.to.files<-paste0(getwd(),"/output/")
   
 seed.<-3
 
-n0=100
+n0=25
 n<-n0 
 
-external=F#T
+external=T#F#T
 
-OC<-"typeI"#"power" # "typeI"
-mus=c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1)
+OC<-"typeI" #"power" # "typeI"
+#mus=c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1)  # type I and bias and alpha0
+mus=c(-1,-.75,-.5, -.25, -.1)  # Ext
+#mus=c(-.35, -.25, -.1,0) # power
+
 mu0<- 0
 power.null<- -0.5 # null for power simulations
 
-discfun<- "wb"  #"wbord" #"wb" # change function loss for 1-side vs. 2-side
+discfun<- "wb" #"wbord" #"wb" # change function loss for 1-side vs. 2-side
 two.sided<-T  # two-sided discount function
 
 max_alpha<-1
@@ -101,7 +104,7 @@ if(is.null(sinkfname)){
 }
 
 
-sink(sinkfname,split=T, append=T)
+#sink(sinkfname,split=T, append=T) # put this in modifiedMDICprogram and open/close for output only
 
 
 set.seed(seed.) # used in paper (same seed for every parameter configuation)
@@ -135,7 +138,7 @@ for(i. in 1:n.i){ # loop over mu (theta) values
 }
 
   
-sink()
+#sink()
 
 
 probF<-paste0("results.prob.dropF",".",discfun)

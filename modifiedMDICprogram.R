@@ -108,6 +108,8 @@ for(i in 1:nsim){
 }
 
 # print to sink output
+sink(sinkfname,split=T, append=T) # put this in modifiedMDICprogram and open/close for output only
+
 cat("percent = \n")
 print(percent)
 cat("mu = \n")
@@ -139,3 +141,6 @@ print(mean(sd.2))
 
 cat("bias: Dropping\n")
 print(mean(bias2))
+
+sink()
+
