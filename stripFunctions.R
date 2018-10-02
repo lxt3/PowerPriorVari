@@ -20,7 +20,8 @@ my.strip5a <- function(which.given, ..., factor.levels,var.name) {
   varnames<-c( expression(paste("Sample Size")), expression("Similarity"))
   strip.default(which.given, ..., factor.levels = levs, var.name=varnames,
                 strip.names = c(TRUE),strip.levels=c(T),
-                sep=expression(paste(": "))
+                sep=expression(paste(": ")),
+                par.strip.text = list(cex=.75)
   )
 }
 
@@ -31,7 +32,8 @@ my.strip5 <- function(which.given, ..., factor.levels,var.name) {
   varnames<-c( expression(paste("Sample Size")), expression("Similarity"))
   strip.default(which.given, ..., factor.levels = levs, var.name=varnames,
                 strip.names = c(TRUE),strip.levels=c(T),
-                sep=expression(paste(": "))
+                sep=expression(paste(": ")),
+                par.strip.text = list(cex=.75)
   )
 }
 
