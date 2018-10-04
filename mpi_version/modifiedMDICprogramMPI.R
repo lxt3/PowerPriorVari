@@ -11,7 +11,8 @@ ret<-task.pull(1:np,FUN, nsim=nsim, n=n, mu=mu, percent=percent,null=null,
 
 if(comm.rank()==0){
   ret.jobs<-lapply(ret,function(x){
-    c(res1=mean(x$res1), res2=mean(x$res2), alpha=mean(x$alpha), bias1=mean(x$bias1), bias2=mean(x$bias2))
+    c(res1=mean(x$res1), res2=mean(x$res2), alpha=mean(x$alpha), bias1=mean(x$bias1), 
+      bias2=mean(x$bias2), sd1=mean(x$sd.1), sd2=mean(x$sd.2))
   })
   ret.jobs<-Reduce("+",ret.jobs)/np # means
   

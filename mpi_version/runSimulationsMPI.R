@@ -8,10 +8,10 @@ seed.<-3
 
 np<-6
 
-n0=25
+n0=100
 n<-n0 
 
-external=F#T
+external=T#F#T
 
 OC<-"typeI" #"power" # "typeI"
 #mus=c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1)  # type I and bias and alpha0
@@ -21,8 +21,8 @@ mus=c(-1,-.75,-.5, -.25, -.1)  # Ext
 mu0<- 0
 power.null<- -0.5 # null for power simulations
 
-discfun<- "wb" #"wbord" #"wb" # change function loss for 1-side vs. 2-side
-two.sided<-F  # two-sided discount function
+discfun<- "wbord" #"wb" # change function loss for 1-side vs. 2-side
+two.sided<-T  # two-sided discount function
 
 max_alpha<-1
 
@@ -143,8 +143,8 @@ if(comm.rank()==0){
     results.alpha[n.j*i. - n.j + j.]<-ret.jobs["alpha"]
     results.biasF[n.j*i. - n.j + j.]<-ret.jobs["bias1"]
     results.biasT[n.j*i. - n.j + j.]<-ret.jobs["bias2"]
-  #  results.SDF[n.j*i. - n.j + j.]<-mean(sd.1)
-  #  results.SDT[n.j*i. - n.j + j.]<-mean(sd.2)
+    results.SDF[n.j*i. - n.j + j.]<-ret.jobs["sd1"]
+    results.SDT[n.j*i. - n.j + j.]<-ret.jobs["sd2"]
 }
   }
 }
@@ -156,23 +156,22 @@ finalize(mpi.finalize = TRUE)
  probF<-paste0("results.prob.dropF",".",discfun)
  probT<-paste0("results.prob.dropT",".",discfun)
  alpha<-paste0("results.alpha",".",discfun)
-# SDT<-paste0("results.SDT",".",discfun)
-# SDF<-paste0("results.SDF",".",discfun)
+ SDT<-paste0("results.SDT",".",discfun)
+ SDF<-paste0("results.SDF",".",discfun)
  biasT<-paste0("results.biasT",".",discfun)
  biasF<-paste0("results.biasF",".",discfun)
 # 
  assign(probF,results.prob.dropF)
  assign(probT,results.prob.dropT)
  assign(alpha, results.alpha)
-# assign(SDT, results.SDT)
-# assign(SDF, results.SDF)
+ assign(SDT, results.SDT)
+ assign(SDF, results.SDF)
  assign(biasT, results.biasT)
  assign(biasF, results.biasF)
  
 # 
 # 
- save(list=c(probT, probF, alpha,#, SDT, SDF, 
-      biasT, biasF),
+ save(list=c(probT, probF, alpha, SDT, SDF, biasT, biasF),
       file=fname)
 
 
