@@ -14,7 +14,7 @@ my.strip4a <- function(which.given, ..., factor.levels,var.name) {
 }
 
 # Figure 3a
-my.strip5a <- function(which.given, ..., factor.levels,var.name) {
+my.strip5a <- function(which.given, ..., factor.levels,var.name,par.strip.text) {
   levs <- if (which.given == 1) c("25","50", "100") #levels for your second factor (x2)
   else c(expression(paste("KS 1-sided")), expression(paste("KS 2-sided")) ) #levels for your first factor (x1)
   varnames<-c( expression(paste("Sample Size")), expression("Similarity"))
@@ -26,7 +26,7 @@ my.strip5a <- function(which.given, ..., factor.levels,var.name) {
 }
 
 # Figure 3b
-my.strip5 <- function(which.given, ..., factor.levels,var.name) {
+my.strip5 <- function(which.given, ..., factor.levels,var.name,par.strip.text) {
   levs <- if (which.given == 1) c("25","50", "100") #levels for your second factor (x2)
   else c(expression(paste("Stoch Ord 1-sided")), expression(paste("Stoc Ord 2-sided")) ) #levels for your first factor (x1)
   varnames<-c( expression(paste("Sample Size")), expression("Similarity"))
