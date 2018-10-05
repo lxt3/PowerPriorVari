@@ -26,7 +26,6 @@ if(comm.rank()==0){
   print(ret.jobs)
   sink()
   
-  #ret.jobs<<-ret.jobs
 }
 
 
