@@ -17,10 +17,13 @@ results.prob.dropF.KS1side<-results.prob.dropF.wb  # type I error without droppi
 results.prob.dropT.KS1side<-results.prob.dropT.wb  # type I error with dropping
 results.biasF.KS1side<-results.biasF.wb   # bias results without dropping
 results.biasT.KS1side<-results.biasT.wb   # bias results with dropping
+results.SDF.KS1side<-results.SDF.wb   # SD results without dropping
+results.SDT.KS1side<-results.SDT.wb   # SD results with dropping
 
 
 # make room for KS2 (for good measure)
-rm(results.prob.dropF.wb, results.prob.dropT.wb,results.alpha.wb, results.biasF.wb, results.biasT.wb)
+rm(results.prob.dropF.wb, results.prob.dropT.wb,results.alpha.wb, results.biasF.wb, results.biasT.wb,
+   results.SDF.wb, results.SDT.wb)
 
 
 # KS 2-sided
@@ -30,8 +33,11 @@ results.prob.dropF.KS2side<-results.prob.dropF.wb  # type I error without droppi
 results.prob.dropT.KS2side<-results.prob.dropT.wb
 results.biasF.KS2side<-results.biasF.wb   # bias results without dropping
 results.biasT.KS2side<-results.biasT.wb   # bias results with dropping
+results.SDF.KS2side<-results.SDF.wb   # SD results without dropping
+results.SDT.KS2side<-results.SDT.wb   # SD results with dropping
 
-rm(results.prob.dropF.wb, results.prob.dropT.wb,results.alpha.wb, results.biasF.wb, results.biasT.wb)
+rm(results.prob.dropF.wb, results.prob.dropT.wb,results.alpha.wb, results.biasF.wb, results.biasT.wb,
+   results.SDF.wb, results.SDT.wb)
 
 
 # SO 1-sided
@@ -41,9 +47,12 @@ results.prob.dropF.SO1side<-results.prob.dropF.wbord  # type I error without dro
 results.prob.dropT.SO1side<-results.prob.dropT.wbord 
 results.biasF.SO1side<-results.biasF.wbord   # bias without dropping
 results.biasT.SO1side<-results.biasT.wbord
+results.SDF.SO1side<-results.SDF.wbord   # SD without dropping
+results.SDT.SO1side<-results.SDT.wbord
 
 # make room for SO2
-rm(results.alpha.wbord,results.prob.dropF.wbord,results.prob.dropT.wbord, results.biasF.wbord, results.biasT.wbord)
+rm(results.alpha.wbord,results.prob.dropF.wbord,results.prob.dropT.wbord, results.biasF.wbord, 
+   results.biasT.wbord, results.SDF.wbord, results.SDT.wbord)
 
 
 # SO 2-sided
@@ -53,9 +62,12 @@ results.prob.dropF.SO2side<-results.prob.dropF.wbord  # type I error without dro
 results.prob.dropT.SO2side<-results.prob.dropT.wbord
 results.biasF.SO2side<-results.biasF.wbord   # bias without dropping
 results.biasT.SO2side<-results.biasT.wbord
+results.SDF.SO2side<-results.SDF.wbord   # SD without dropping
+results.SDT.SO2side<-results.SDT.wbord
 
 
-rm(results.alpha.wbord,results.prob.dropF.wbord,results.prob.dropT.wbord, results.biasF.wbord, results.biasT.wbord)
+rm(results.alpha.wbord,results.prob.dropF.wbord,results.prob.dropT.wbord, results.biasF.wbord, 
+   results.biasT.wbord, results.SDF.wbord, results.SDT.wbord)
 
 
 # gather the vectors for output
@@ -74,6 +86,13 @@ list(alpha=c(results.alpha.KS2side,
        results.biasF.KS1side, results.biasT.KS1side,
        results.biasF.SO1side, results.biasT.SO1side,
        results.biasF.SO2side, results.biasT.SO2side
+     ),
+     
+     sdF=c(
+       results.SDF.KS2side[1:20],
+       results.SDF.KS1side[1:20],
+       results.SDF.SO1side[1:20],
+       results.SDF.SO2side[1:20]
      )
      
      )

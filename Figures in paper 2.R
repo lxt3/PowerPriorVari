@@ -263,7 +263,7 @@ xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
 )
 
 
-#### Power uses a different figureFunction
+#### Figure 5 Power uses a different figureFunction
 
 #path.stem<-paste0(getwd(),"/PaperFigures/")  # change to this when I transfer RDatas to PaperFigures
 path.stem<-paste0(getwd(),"/output/")
@@ -272,9 +272,6 @@ path.stem<-paste0(getwd(),"/output/")
 raten100<-figureFunctionPower(100, path.stem)
 raten50<-figureFunctionPower(50, path.stem)
 raten25<-figureFunctionPower(25, path.stem)
-
-
-###### Figure 5 (power)
 
 # Make data frame
 sims<-data.frame(mu=rep(rep(c(-.35,-.25,-.1, 0),each=4),8*3),         # 4
@@ -315,7 +312,7 @@ xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = 
        }#,
 )
 
-# Figure 7b (SO measures)
+# Figure 5b (SO measures)
 
 source("stripFunctions.R")
 require(lattice)
@@ -341,24 +338,33 @@ xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = 
 )
 
 
-#### SD comparison uses a different function too
+#### Figure 7 SD comparison uses a different function too
 
-## Figure 6 (SD comparison)
+#path.stem<-paste0(getwd(),"/PaperFigures/")  # change to this when I transfer RDatas to PaperFigures
+path.stem<-paste0(getwd(),"/output/")
 
-# Get data from figureFunctionSD
 
+# Get exteranl data from figureFunctionExt
+raten100Ext<-figureFunctionExt(100, path.stem)$sdF
+raten50Ext<-figureFunctionExt(50, path.stem)$sdF
+raten25Ext<-figureFunctionExt(25, path.stem)$sdF
 
+# get results for sdF from internal data
+raten100<-res.100$sdF
+raten50<-res.50$sdF
+raten25<-res.25$sdF
 
 
 # Make data frame
 sims<-data.frame(mu=rep(rep(c(-1,-.75,-.5,-.25,-.1),each=4),8*2),         # 4
                  percent=as.character(rep(c(100,75,50,25), 80)),    # 4
-                 twice.D1=rep(rep(c("yes", "no"), each=20),4*2),    # 2
-                 similarity=rep(rep(c("cKS-2","bKS-1","aSO1","aSO2"),each=40),2),  # 4
+                 twice.D1=rep(rep(c("yes", "no"), each=80),2), # each=20),4*2),    # 2
+                 similarity=rep(rep(c("cKS-2","bKS-1","aSO1","aSO2"),each=20),4),  # 4
                  Size=rep(c("100","025"),each=160),             # 3
                  rate=
                    c( 
-                     res.100,res.25
+                     raten100,raten100Ext,
+                     raten25,raten25Ext
                    ))
 
 ## n=100
@@ -366,7 +372,7 @@ source("stripFunctions.R")
 require(lattice)
 xyplot(rate~mu|twice.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
        subset= sims$Size=="100",
-       layout=c(4,2),#as.table=TRUE,
+       layout=c(4,2),
        key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
                        title="Percent of D used",cex.title=.9), 
@@ -374,7 +380,7 @@ xyplot(rate~mu|twice.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
        
        scales=list(y=list(tick.number=6), x=list(at=c(-1,-.75,-.5,-.25,-.1),cex=.7,
                                                  labels=c("-1","-0.75","-0.50","-0.25","-0.10")), 
-                   relation="same",alternating=c(1,1)), #x=list(at=c(-1,-.5,-.25)
+                   relation="same",alternating=c(1,1)), 
        strip=my.strip6aaa,
        panel = function(x, y,groups,subscripts) {
          panel.grid(h = 0, v = 0)
@@ -389,7 +395,7 @@ source("stripFunctions.R")
 require(lattice)
 xyplot(rate~mu|twice.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
        subset=sims$Size=="025",
-       layout=c(4,2),#as.table=TRUE,
+       layout=c(4,2),
        key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
                        title="Percent of D used",cex.title=.9), 
@@ -397,7 +403,7 @@ xyplot(rate~mu|twice.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
        
        scales=list(y=list(tick.number=6), x=list(at=c(-1,-.75,-.5,-.25,-.1), 
                                                  labels=c("-1","-0.75","-0.50","-0.25","-0.10"), cex=.7), 
-                   relation="same",alternating=c(1,1)), #x=list(at=c(-1,-.5,-.25)
+                   relation="same",alternating=c(1,1)), 
        strip=my.strip6aaa,
        panel = function(x, y,groups,subscripts) {
          panel.grid(h = 0, v = 0)
