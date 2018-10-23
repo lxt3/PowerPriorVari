@@ -149,9 +149,6 @@ if(comm.rank()==0){
   }
 }
 
-finalize(mpi.finalize = TRUE)
-
-
 
  probF<-paste0("results.prob.dropF",".",discfun)
  probT<-paste0("results.prob.dropT",".",discfun)
@@ -174,5 +171,6 @@ finalize(mpi.finalize = TRUE)
  save(list=c(probT, probF, alpha, SDT, SDF, biasT, biasF),
       file=fname)
 
-
+ finalize(mpi.finalize = TRUE)
+ 
 
