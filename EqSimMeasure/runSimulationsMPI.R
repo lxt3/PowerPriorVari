@@ -22,9 +22,9 @@ mu0<- 0
 power.null<- -0.5 # null for power simulations
 
 discfun<- "new" #"wbord" #"wb" # change function loss for 1-side vs. 2-side
-two.sided<-T#F#T  # two-sided discount function
+two.sided<-F#T  # two-sided discount function
 
-max_alpha<-1
+max_alpha<-.5
 delta<-.2
 
 
@@ -71,10 +71,10 @@ if(discfun=="wbord" && OC=="power" ){
 
 if(discfun=="new" && OC=="typeI" ){
   if(two.sided){
-    fname.core<-paste0(path.to.files,"resultsEQWeibull2sidedelta",delta,"n")
+    fname.core<-paste0(path.to.files,"resultsEQWeibull2sidedelta",delta,"maxalpha",max_alpha,"n")
     ws=.4; wsh=1.5; # if weibull_scale=99 that represents pvalue equals weight
   } else{
-    fname.core<-paste0(path.to.files,"resultsEQWeibull1sidePonlydelta",delta,"n")
+    fname.core<-paste0(path.to.files,"resultsEQWeibull1sidedelta",delta,"maxalpha",max_alpha,"n")
     ws=.65; wsh=3; # if weibull_scale=99 that represents pvalue equals weight
   }
 }
