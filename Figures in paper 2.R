@@ -1,3 +1,183 @@
+### Figure 1
+
+op <- par(mar=c(1.5,1,1,1),mgp=c(3,0,0))
+
+layout(matrix(c(1,2,3,4), 2, 2, byrow = TRUE))
+
+
+# Figure 1a
+
+x<-seq(-2,4.0,0.01)
+y<-dnorm(x,mean=1.0)
+
+plot(x,y, type="l", xlab="", ylab="",bty="n",xaxt="n", 
+     yaxt="n", xlim=c(-3.0, 8.0),lwd=2, ylim=c(0,.40),frame.plot=FALSE)
+axis(1,  at=c(-3, 0, 1.5, 3.5, 7.0), lwd.ticks = -1,
+     labels=c(NA,0, NA,NA,NA))
+
+x1<-seq(0.0,6.0,0.01)
+y1<-dnorm(x1,mean=1.0)
+
+x2<-seq(-2.0,8.0,0.01)
+y2<-dnorm(x2,mean=1.0,sd=2)
+
+x3<-seq(-2.0,8.0,0.01)
+y3<-dnorm(x3,mean=1.0,sd=1.5)
+
+x4<-seq(-2.0,8.0,0.01)
+y4<-dnorm(x4,mean=1.0,sd=1.25)
+
+xvalues<-x[x>=0]
+
+segments(x0=c(xvalues,x1[x1>2.5]), y0=0, x1=c(xvalues,x1[x1>2.5]),
+         y1=dnorm(c(xvalues,x1[x1>2.5]),mean = 1.0)-.006,lty=1, col="lightgray")
+segments(x0=c(xvalues,x2[x2>3]), y0=0, x1=c(xvalues,x2[x2>3]),
+         y1=dnorm(c(xvalues,x2[x2>3]),mean = 1.0, sd=2)-.006,lty=1, col="lightgray")
+segments(x0=c(xvalues,x3[x3>3]), y0=0, x1=c(xvalues,x3[x3>3]),
+         y1=dnorm(c(xvalues,x3[x3>3]),mean = 1.0, sd=1.5)-.006,lty=1, col="lightgray")
+segments(x0=c(xvalues,x4[x4>3]), y0=0, x1=c(xvalues,x4[x4>3]),
+         y1=dnorm(c(xvalues,x4[x4>3]),mean = 1.0, sd=1.25)-.006,lty=1, col="lightgray")
+
+lines(x,y,col=1,lwd=2)
+lines(x1,y1,col=2,lwd=2)
+lines(x2,y2,col=3,lwd=2)
+lines(x3,y3,col=4,lwd=2)
+lines(x4,y4,col=5,lwd=2)
+
+segments(x0=0, y0=0, x1=0,y1=dnorm(0),lty=2)
+
+
+## Figure 1b
+
+x<-seq(-4.0,2.0,0.01)
+y<-dnorm(x,mean=-1.0)
+plot(x,y, type="l", xlab="", ylab="",bty="n",xaxt="n", 
+     yaxt="n", xlim=c(-6.0, 6.0),lwd=2, ylim=c(0,.40),frame.plot=FALSE)
+axis(1,  at=c(-5.5, 0, 2, 4.5), lwd.ticks = -1,#lwd=-1,padj=0,
+     labels=c(NA,0,NA,NA))#labels=F)
+
+x1<-seq(-2.0,4.0,0.01)
+y1<-dnorm(x1,mean=-1.0)
+
+x2<-seq(-5.0,6,0.01)
+y2<-dnorm(x2,mean=-1.0,sd=2)
+
+x3<-seq(-5.0,6,0.01)
+y3<-dnorm(x3,mean=-1.0,sd=1.5)
+
+x4<-seq(-5.0,6,0.01)
+y4<-dnorm(x4,mean=-1.0,sd=1.25)
+
+segments(x0=c(xvalues,x1[x1>2]), y0=0, x1=c(xvalues,x1[x1>2]),
+         y1=dnorm(c(xvalues,x1[x1>2]),mean = -1.0)-.006,lty=1, col="lightgray")
+segments(x0=c(xvalues,x2[x2>2]), y0=0, x1=c(xvalues,x2[x2>2]),
+         y1=dnorm(c(xvalues,x2[x2>2]),mean = -1.0, sd=2)-.006,lty=1, col="lightgray")
+segments(x0=c(xvalues,x3[x3>2]), y0=0, x1=c(xvalues,x3[x3>2]),
+         y1=dnorm(c(xvalues,x3[x3>2]),mean = -1.0, sd=1.5)-.006,lty=1, col="lightgray")
+segments(x0=c(xvalues,x4[x4>2]), y0=0, x1=c(xvalues,x4[x4>2]),
+         y1=dnorm(c(xvalues,x4[x4>2]),mean = -1.0, sd=1.25)-.006,lty=1, col="lightgray")
+
+lines(x,y,col=1,lwd=2)
+lines(x1,y1,col=2,lwd=2)
+lines(x2,y2,col=3,lwd=2)
+lines(x3,y3,col=4,lwd=2)
+lines(x4,y4,col=5,lwd=2)
+
+segments(x0=0, y0=0, x1=0,y1=dnorm(0),lty=2)
+
+
+# Figure 1c
+
+x<-seq(-2,4.0,0.01)
+y<-dnorm(x,mean=1.0)
+
+delta.<-1.2
+
+plot(x,y, type="l", xlab="", ylab="",bty="n",xaxt="n", 
+     yaxt="n", xlim=c(-3.0, 8.0),lwd=2, ylim=c(0,.40),frame.plot=FALSE)
+axis(1,  at=c(-3, -delta., 0, delta., 6.0), lwd.ticks = -1,#lwd=-1,padj=0,
+     labels=c(NA, expression(-delta),0, expression(delta),NA))
+
+x1<-seq(-2.0,4.0,0.01)
+y1<-dnorm(x1,mean=1.0)
+
+x2<-seq(-3.0,5.0,0.01)
+y2<-dnorm(x2,mean=1.0,sd=2)
+
+x3<-seq(-3.0,5.0,0.01)
+y3<-dnorm(x3,mean=1.0,sd=1.5)
+
+x4<-seq(-3.0,5.0,0.01)
+y4<-dnorm(x4,mean=1.0,sd=1.25)
+
+ind<-c(x>=-delta.& x<=delta.)
+xvalues<-x[ind]
+segments(x0=xvalues, y0=0, x1=xvalues,
+         y1=dnorm(xvalues,mean = 1.0)-.006,lty=1, col="lightgray")
+segments(x0=xvalues, y0=0, x1=xvalues,
+         y1=dnorm(xvalues,mean = 1.0, sd=2)-.006,lty=1, col="lightgray")
+segments(x0=xvalues, y0=0, x1=xvalues,
+         y1=dnorm(xvalues,mean = 1.0, sd=1.5)-.006,lty=1, col="lightgray")
+segments(x0=xvalues, y0=0, x1=xvalues,
+         y1=dnorm(xvalues,mean = 1.0, sd=1.25)-.006,lty=1, col="lightgray")
+
+lines(x,y,col=1,lwd=2)
+lines(x1,y1,col=2,lwd=2)
+lines(x2,y2,col=3,lwd=2)
+lines(x3,y3,col=4,lwd=2)
+lines(x4,y4,col=5,lwd=2)
+
+segments(x0=-delta., y0=0, x1=-delta.,y1=dnorm(0),lty=2)
+segments(x0=delta., y0=0, x1=delta.,y1=dnorm(0),lty=2)
+
+
+## Figure 1d
+
+x<-seq(-4.0,2.0,0.01)
+y<-dnorm(x,mean=-1.0)
+
+delta.<-1.2
+
+plot(x,y, type="l", xlab="", ylab="",bty="n",xaxt="n", 
+     yaxt="n", xlim=c(-6.0, 6.0),lwd=2, ylim=c(0,.40),frame.plot=FALSE)
+axis(1,  at=c(-5.5, -delta., 0, delta., 4.5), lwd.ticks = -1,#lwd=-1,padj=0,
+     labels=c(NA, expression(-delta),0, expression(delta),NA))
+
+
+x1<-seq(-4.0,3.0,0.01)
+y1<-dnorm(x1,mean=-1.0)
+
+x2<-seq(-5.0,3.0,0.01)
+y2<-dnorm(x2,mean=-1.0,sd=2)
+
+x3<-seq(-5.0,3,0.01)
+y3<-dnorm(x3,mean=-1.0,sd=1.5)
+
+x4<-seq(-5.0,3,0.01)
+y4<-dnorm(x4,mean=-1.0,sd=1.25)
+
+ind<-c(x>=-delta.& x<=delta.)
+
+segments(x0=xvalues, y0=0, x1=xvalues,
+         y1=dnorm(xvalues,mean = -1.0)-.006,lty=1, col="lightgray")
+segments(x0=xvalues, y0=0, x1=xvalues,
+         y1=dnorm(xvalues,mean = -1.0, sd=2)-.006,lty=1, col="lightgray")
+segments(x0=xvalues, y0=0, x1=xvalues,
+         y1=dnorm(xvalues,mean = -1.0, sd=1.5)-.006,lty=1, col="lightgray")
+segments(x0=xvalues, y0=0, x1=xvalues,
+         y1=dnorm(xvalues,mean = -1.0, sd=1.25)-.006,lty=1, col="lightgray")
+
+lines(x,y,col=1,lwd=2)
+lines(x1,y1,col=2,lwd=2)
+lines(x2,y2,col=3,lwd=2)
+lines(x3,y3,col=4,lwd=2)
+lines(x4,y4,col=5,lwd=2)
+
+segments(x0=-delta., y0=0, x1=-delta.,y1=dnorm(0),lty=2)
+segments(x0=delta., y0=0, x1=delta.,y1=dnorm(0),lty=2)
+
+
+par(op)
 
 #### Figure 2 in MDIC paper (alpha functions)
 
