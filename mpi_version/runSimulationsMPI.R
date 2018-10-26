@@ -71,7 +71,7 @@ if(discfun=="wbord" && OC=="power" ){
 sinkfname<-paste0(fname.core,n0,".txt")
 
 
-nsim<-15000/np
+nsim<-15000/(np-1)
 nmcmc<-45000
 prob.H1<-.975
 
