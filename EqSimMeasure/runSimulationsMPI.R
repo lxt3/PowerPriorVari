@@ -6,7 +6,7 @@ path.to.files<-paste0(getwd(),"/output/")
 
 seed.<-3
 
-np<-7
+np<-8
 
 n0=100
 n<-n0 
@@ -24,7 +24,7 @@ power.null<- -0.5 # null for power simulations
 discfun<- "new" #"wbord" #"wb" # change function loss for 1-side vs. 2-side
 two.sided<-F#T  # two-sided discount function
 
-max_alpha<-.5
+max_alpha<-.25
 delta<-.2
 
 
@@ -74,7 +74,7 @@ if(discfun=="new" && OC=="typeI" ){
     fname.core<-paste0(path.to.files,"resultsEQWeibull2sidedelta",delta,"maxalpha",max_alpha,"n")
     ws=.4; wsh=1.5; # if weibull_scale=99 that represents pvalue equals weight
   } else{
-    fname.core<-paste0(path.to.files,"resultsEQWeibull1sidedelta",delta,"maxalpha",max_alpha,"n")
+    fname.core<-paste0(path.to.files,"resultsEQWeibull1sidePonlyDelta",delta,"maxalpha",max_alpha,"n")
     ws=.65; wsh=3; # if weibull_scale=99 that represents pvalue equals weight
   }
 }
@@ -84,7 +84,7 @@ if(discfun=="new" && OC=="typeI" ){
 sinkfname<-paste0(fname.core,n0,".txt")
 
 
-nsim<-15000/np
+nsim<-15000/(np-1)
 nmcmc<-45000
 prob.H1<-.975
 
