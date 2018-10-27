@@ -7,6 +7,7 @@ path.to.files<-paste0(getwd(),"/output/")
 seed.<-3
 
 np<-6
+nworkers<-np-1
 
 n0=100
 n<-n0 
@@ -87,7 +88,7 @@ if(discfun=="equiv" && OC=="typeI" ){
 sinkfname<-paste0(fname.core,n0,".txt")
 
 
-nsim<-15000/(np-1)
+nsim<-15000/nworkers
 nmcmc<-45000
 prob.H1<-.975
 
