@@ -113,7 +113,7 @@ Loss_function1 <-function(mu, sigma2, N, mu0, sigma02, N0, number_mcmc, D0, D) {
       else {
         p_test1<-0
       }
-      alpha_loss <-alpha_lossf(p_test1) #p_test1#
+      alpha_loss <-if(post.prob.only) p_test1 else {alpha_lossf(p_test1) }#p_test1#
     }
     
   }
