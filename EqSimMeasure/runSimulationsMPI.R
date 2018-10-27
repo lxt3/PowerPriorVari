@@ -75,10 +75,10 @@ if(discfun=="wbord" && OC=="power" ){
 if(discfun=="equiv" && OC=="typeI" ){
   Ponly<-ifelse(post.prob.only,"Ponly","")
   if(two.sided){
-    fname.core<-paste0(path.to.files,"resultsEQWeibull2sidedelta",Ponly,delta,"maxalpha",max_alpha,"n")
+    fname.core<-paste0(path.to.files,"resultsEQ2sidedelta",Ponly,delta,"maxalpha",max_alpha,"n")
     ws=.4; wsh=1.5; # if weibull_scale=99 that represents pvalue equals weight
   } else{
-    fname.core<-paste0(path.to.files,"resultsEQWeibull1sideDelta",Ponly,delta,"maxalpha",max_alpha,"n")
+    fname.core<-paste0(path.to.files,"resultsEQ1sideDelta",Ponly,delta,"maxalpha",max_alpha,"n")
     ws=.65; wsh=3; # if weibull_scale=99 that represents pvalue equals weight
   }
 }
