@@ -15,20 +15,20 @@ n<-n0
 external=F#T
 
 OC<-"typeI" #"power" # "typeI"
-mus=c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1)  # type I and bias and alpha0
+#mus=c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1)  # type I and bias and alpha0
 #mus=c(-1,-.75,-.5, -.25, -.1)  # External
-#mus=c(-.35, -.25, -.1,0) # power
+mus=c(-.35, -.25, -.1,0) # power
 
 mu0<- 0
 power.null<- -0.5 # null for power simulations
 
 discfun<- "equiv" #"wbord" #"wb" 
-two.sided<-F#T  # two-sided discount function
+two.sided<-T#F#T  # two-sided discount function
 
-post.prob.only<-F # used with equivalence similarity measure
+post.prob.only<-F#T#F # used with equivalence similarity measure
 delta<-.2 # used with equivalence similarity measure
 
-max_alpha<-1
+max_alpha<-1#0.50
 
 
 if(discfun=="wb" && OC=="typeI" ){
@@ -83,6 +83,16 @@ if(discfun=="equiv" && OC=="typeI" ){
   }
 }
 
+if(discfun=="equiv" && OC=="power" ){
+  Ponly<-ifelse(post.prob.only,"Ponly","")
+  if(two.sided){
+    fname.core<-paste0(path.to.files,"powerEQ2sidedelta",Ponly,delta,"maxalpha",max_alpha,"n")
+    ws=.4; wsh=1.5; # if weibull_scale=99 that represents pvalue equals weight
+  } else{
+    fname.core<-paste0(path.to.files,"powerEQ1sideDelta",Ponly,delta,"maxalpha",max_alpha,"n")
+    ws=.65; wsh=3; # if weibull_scale=99 that represents pvalue equals weight
+  }
+}
 
 
 sinkfname<-paste0(fname.core,n0,".txt")
