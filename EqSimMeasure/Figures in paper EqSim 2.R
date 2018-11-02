@@ -406,8 +406,10 @@ sims<-data.frame(mu=rep(rep(c(-1,-.75,-.5,-.25,-.1,0,.1,.25,.5,.75,1),each=4),16
                    ))
 
 ##n=100
-source("stripFunctions.R")
+source("stripFunctionsEqSim.R")
 require(lattice)
+trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
+
 xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
        subset= sims$Size=="100",
        layout=c(4,2),#as.table=TRUE,
@@ -429,8 +431,10 @@ xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
 
 
 ##n=25
-source("stripFunctions.R")
+source("stripFunctionsEqSim.R")
 require(lattice)
+trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
+
 xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
        subset= sims$Size=="025",
        layout=c(4,2),
