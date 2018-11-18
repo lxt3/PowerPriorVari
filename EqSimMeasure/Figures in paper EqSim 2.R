@@ -188,35 +188,13 @@ par(op)
 
 #### Figure 2 in MDIC paper (alpha functions)
 
-x<-seq(0,1,.01)
-y<-pweibull(x, shape = 12, scale = .9)
-
-plot(x,y, type="l",xlab=expression(1 - KS), 
-     ylab=expression(paste(alpha[0],group("(",list(D[0],D[1]),")"))),
-     #ylab=paste("\\alpha_0"),
-     bty="n",xaxt="n", 
-     yaxt="n")
-
-y<-pweibull(x, shape = 20, scale = .9)
-
-lines(x,y, type="l", lty=2)
-axis(1)
-axis(2, lwd.ticks = -1)
-
-legend(x=0.15, y=0.8, legend = c("Weibull(0.9, 12)", "Weibull(0.9, 20)"),lty=c(1,2),cex=.9)
-
-
-# figure 2b
-
 xx<-seq(0,1,.01)
 yy<-pweibull(xx, shape = 3, scale = .65)
 
-plot(xx,yy, type="l",#xlab=expression(paste(p,group("(", list(theta,"<", theta[0]),")" ))), 
-     xlab=expression(paste(p, " = ", p,"(",theta, " < ", theta[0],")")),
-    # ylab=expression(paste(alpha[0],group("(",list(theta[0]^{i},theta[1]^{i}),")"))),
-    ylab=expression(paste(alpha[0],group("(",list(D[0],D[1]),")"))),
-     bty="n",xaxt="n", 
-     yaxt="n")
+plot(xx,yy, type="l", xlab="p",
+     #expression(paste(p, " = ", p,"(",theta, " < ", theta[0],")")),
+     ylab=expression(paste(alpha[0],group("(",list(D[0],D[1]),")"))),
+     bty="n",xaxt="n", yaxt="n")
 axis(1)
 axis(2, lwd.ticks = -1)
 
@@ -543,9 +521,9 @@ path.stem<-paste0(getwd(),"/output/")
 
 
 # Get exteranl data from figureFunctionExt
-raten100Ext<-figureFunctionExt(100, path.stem)$sdF
-raten50Ext<-figureFunctionExt(50, path.stem)$sdF
-raten25Ext<-figureFunctionExt(25, path.stem)$sdF
+raten100Ext<-figureFunctionExtEqSim(100, path.stem)$sdF
+raten50Ext<-figureFunctionExtEqSim(50, path.stem)$sdF
+raten25Ext<-figureFunctionExtEqSim(25, path.stem)$sdF
 
 # get results for sdF from internal data
 raten100<-res.100$sdF
@@ -566,8 +544,10 @@ sims<-data.frame(mu=rep(rep(c(-1,-.75,-.5,-.25,-.1),each=4),8*2),         # 4
                    ))
 
 ## n=100
-source("stripFunctions.R")
+source("stripFunctionsEqSim.R")
 require(lattice)
+trellis.par.set(layout.heights = list(axis.xlab.padding=0, axis.panel=0)) # default is 1,1
+
 xyplot(rate~mu|twice.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
        subset= sims$Size=="100",
        layout=c(4,2),
@@ -587,10 +567,14 @@ xyplot(rate~mu|twice.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
                          panel.groups=panel.xyplot, type="l")#loess,
        }#,
 )
+trellis.par.set(layout.heights = list(axis.xlab.padding=1, axis.panel=1)) # default is 1,1
+
 
 ## n=25
-source("stripFunctions.R")
+source("stripFunctionsEqSim.R")
 require(lattice)
+trellis.par.set(layout.heights = list(axis.xlab.padding=0, axis.panel=0)) # default is 1,1
+
 xyplot(rate~mu|twice.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
        subset=sims$Size=="025",
        layout=c(4,2),
