@@ -238,6 +238,9 @@ sims<-data.frame(mu=rep(rep(c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1),each=4),
 
 library(lattice)
 source("stripFunctionsEqSim.R")
+
+trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
+
 xyplot(rate~mu|Size*similarity,data=sims,groups=percent,subscripts = TRUE,
        subset=(sims$similarity=="cKS-2" | sims$similarity=="bKS-1"),
        layout=c(3,2),#as.table=TRUE,
@@ -258,6 +261,7 @@ xyplot(rate~mu|Size*similarity,data=sims,groups=percent,subscripts = TRUE,
                          panel.groups=panel.xyplot, type="l")#loess,
        }
 )
+trellis.par.set(layout.heights = list(axis.xlab.padding=1)) # default is 1
 
 
 
@@ -265,6 +269,9 @@ xyplot(rate~mu|Size*similarity,data=sims,groups=percent,subscripts = TRUE,
 
 library(lattice)
 source("stripFunctionsEqSim.R")
+
+trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
+
 xyplot(rate~mu|Size*similarity,data=sims,groups=percent,subscripts = TRUE,
        subset=(sims$similarity=="aSO1" | sims$similarity=="aSO2"),
        layout=c(3,2),#as.table=TRUE,
@@ -285,6 +292,7 @@ xyplot(rate~mu|Size*similarity,data=sims,groups=percent,subscripts = TRUE,
                          panel.groups=panel.xyplot, type="l")#loess,
        }
 )
+trellis.par.set(layout.heights = list(axis.xlab.padding=1)) # default is 1
 
 
 ## Figure 4 (type I error rates)
@@ -342,7 +350,7 @@ xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = 
 # Figure 4b (SO measures)
 
 require(lattice)
-source("stripFunctions.R")
+source("stripFunctionsEqSim.R")
 xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
        subset=((sims$similarity=="aSO2" | sims$similarity=="aSO1") & ((sims$Size=="025") | (sims$Size=="100"))),
        layout=c(4,2),#as.table=TRUE,
