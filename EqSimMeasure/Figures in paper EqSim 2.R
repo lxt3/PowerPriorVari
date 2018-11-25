@@ -689,3 +689,252 @@ xyplot(rate~mu|discard.D1,data=sims,groups=percent,subscripts = TRUE,
        }
 )
 
+
+### Figures B (KS results)
+
+## Figure B1 (alpha functions)
+
+x<-seq(0,1,.01)
+y<-pweibull(x, shape = 12, scale = .9)
+
+plot(x,y, type="l",xlab=expression(1 - KS), 
+     ylab=expression(paste(alpha[0],group("(",list(D[0],D[1]),")"))),
+     #ylab=paste("\\alpha_0"),
+     bty="n",xaxt="n", 
+     yaxt="n")
+
+y<-pweibull(x, shape = 20, scale = .9)
+
+lines(x,y, type="l", lty=2)
+axis(1)
+axis(2, lwd.ticks = -1)
+
+legend(x=0.15, y=0.8, legend = c("Weibull(0.9, 12)", "Weibull(0.9, 20)"),lty=c(1,2),cex=.9)
+
+
+#### Lattice figures (KS/SO)
+
+#path.stem<-paste0(getwd(),"/PaperFigures/")  # change to this when I transfer RDatas to PaperFigures
+path.stem<-paste0(getwd(),"/output/")
+
+source("figureFunction.R")
+
+# get results for each n
+res.100<-figureFunction(100, path.stem)
+res.50<-figureFunction(50, path.stem)
+res.25<-figureFunction(25, path.stem)
+
+
+# extract alpha0 part
+raten100<-res.100$alpha
+raten50<-res.50$alpha
+raten25<-res.25$alpha
+
+# create the whole data frame
+sims<-data.frame(mu=rep(rep(c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1),each=4),4*3), 
+                 percent=as.character(rep(c(100,75,50,25), 11*4*3)),
+                 similarity=rep(rep(c("cKS-2","bKS-1","aSO1","aSO2"),each=11*4),3),
+                 Size=rep(c("100","050","025"),each=11*4*4),
+                 
+                 rate=
+                   c(raten100,raten50,raten25
+                   ))
+
+
+
+# Figure B2 (KS measures)
+
+library(lattice)
+source("stripFunctions.R")
+xyplot(rate~mu|Size*similarity,data=sims,groups=percent,subscripts = TRUE,
+       subset=(sims$similarity=="cKS-2" | sims$similarity=="bKS-1"),
+       layout=c(3,2),#as.table=TRUE,
+       key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
+                       columns=4, space="top",
+                       title="Percent of D used",cex.title=.9), 
+       xlab = expression(paste(theta^"*")), 
+       ylab = expression(paste(alpha[0],group("(",list(D[0],D[1]),")"))),
+       
+       scales=list(y=list(limits=c(0.0,1), at=seq(0.0,1,by=0.25)), 
+                   #x=list(at=c(-1,-.75,-.5, -.25, 0, .25,.5,.75,1)),
+                   x=list(at=c(-1,-.5,  0, .5,1)),
+                   tck=c(1,0),relation="same",alternating=c(1,1)), #x=list(at=c(-1,-.5,-.25)
+       strip=my.strip5a,
+       panel = function(x, y,subscripts=subscripts,groups) {
+         panel.xyplot(x, y,pch=20,col=c(1,4,3,2))
+         panel.superpose(x,y,subscripts=subscripts,groups=groups,col=1:4, 
+                         panel.groups=panel.xyplot, type="l")#loess,
+       }
+)
+
+
+## Figure B3 (type I error rates)
+
+# get results for typeI error rate
+raten100<-res.100$typeI
+raten50<-res.50$typeI
+raten25<-res.25$typeI
+
+
+# create the whole data frame
+sims<-data.frame(mu=rep(rep(c(-1,-.75,-.5, -.25, -.1),each=4),4*3*2), 
+                 percent=as.character(rep(c(100,75,50,25), 5*4*3*2)),
+                 
+                 discard.D1=rep(rep(c("no", "yes"), each=20),4*3),
+                 
+                 similarity=rep(rep(c("cKS-2","bKS-1","aSO1","aSO2"),each=5*4*2),3),
+                 Size=rep(c("100","050","025"),each=5*4*4*2),
+                 
+                 rate=
+                   c(raten100,raten50,raten25
+                   ))
+
+# We have not discarded 100% of the data, so set these to NA
+sims$rate[(sims$discard.D1=="yes" & sims$percent=="100")]<-NA
+
+
+library(lattice)
+source("stripFunctions.R")
+xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
+       subset=((sims$similarity=="cKS-2" | sims$similarity=="bKS-1") & ((sims$Size=="025") | (sims$Size=="100")) 
+       ),
+       layout=c(4,2),#as.table=TRUE,
+       key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
+                       columns=4, space="top",
+                       title="Percent of D used",cex.title=.9), 
+       xlab = expression(paste(theta^"*")), 
+       ylab = "type I error rate",
+       
+       scales=list(y=list(limits=c(0.0,.25), at=seq(0.0,.25,by=0.05)), 
+                   x=list(at=c(-1,-.75,-.5, -.25,-0.1), labels=c("-1","-0.75","-0.50","-0.25","-0.10"),cex=.7),
+                   tck=c(1,0),relation="same",alternating=c(1,1)), 
+       strip=my.strip6a,
+       panel = function(x, y,subscripts=subscripts,groups) {
+         panel.xyplot(x, y,pch=20,col=c(1,4,3,2))
+         panel.superpose(x,y,subscripts=subscripts,groups=groups,col=1:4, 
+                         panel.groups=panel.xyplot, type="l")
+       }
+)
+
+
+#### Figure B6 (bias)
+
+# get results for bias
+raten100<-res.100$bias
+raten50<-res.50$bias
+raten25<-res.25$bias
+
+
+# make the data frame
+sims<-data.frame(mu=rep(rep(c(-1,-.75,-.5,-.25,-.1,0,.1,.25,.5,.75,1),each=4),16),         # 4
+                 percent=as.character(rep(c(100,75,50,25), 176)),    # 4
+                 discard.D1=rep(rep(c("no", "yes"), each=44),8),    # 2
+                 similarity=rep(rep(c("cKS-2","bKS-1","aSO1","aSO2"),each=88),2),  # 4
+                 Size=rep(c("100","025"),each=352),             # 3
+                 rate=
+                   c( 
+                     raten100, raten25
+                   ))
+
+##n=100
+source("stripFunctions.R")
+require(lattice)
+xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
+       subset= sims$Size=="100",
+       layout=c(4,2),#as.table=TRUE,
+       key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
+                       columns=4, space="top",
+                       title="Percent of D used",cex.title=.9), 
+       xlab = expression(theta^"*"), ylab = expression(paste("Bias of ", theta^"*")),
+       
+       scales=list(y=list(tick.number=6), x=list(at=c(-1,-.5,0,.5,1)), 
+                   relation="same",alternating=c(1,1)), 
+       strip=my.strip9a,
+       panel = function(x, y,groups,subscripts) {
+         panel.grid(h = 0, v = 0)
+         panel.xyplot(x, y, pch=20,col=c(1,4,3,2))
+         panel.superpose(x,y,subscripts = subscripts,groups=groups,col=1:4, 
+                         panel.groups=panel.xyplot, type="l")#loess,
+       }#,
+)
+
+
+##n=25
+source("stripFunctions.R")
+require(lattice)
+xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
+       subset= sims$Size=="025",
+       layout=c(4,2),
+       key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
+                       columns=4, space="top",
+                       title="Percent of D used",cex.title=.9), 
+       xlab = expression(theta^"*"), ylab = expression(paste("Bias of ", theta^"*")),
+       
+       scales=list(y=list(tick.number=6), x=list(at=c(-1,-.5,0,.5,1)), 
+                   relation="same",alternating=c(1,1)), 
+       strip=my.strip9a,
+       panel = function(x, y,groups,subscripts) {
+         panel.grid(h = 0, v = 0)
+         panel.xyplot(x, y, pch=20,col=c(1,4,3,2))
+         panel.superpose(x,y,subscripts = subscripts,groups=groups,col=1:4, 
+                         panel.groups=panel.xyplot, type="l")
+       }#,
+)
+
+
+
+#### Figure B4 Power uses a different figureFunction
+
+#path.stem<-paste0(getwd(),"/PaperFigures/")  # change to this when I transfer RDatas to PaperFigures
+path.stem<-paste0(getwd(),"/output/")
+
+source("figureFunctionPower.R")
+
+# get results for each n
+raten100<-figureFunctionPower(100, path.stem)
+raten50<-figureFunctionPower(50, path.stem)
+raten25<-figureFunctionPower(25, path.stem)
+
+# Make data frame
+sims<-data.frame(mu=rep(rep(c(-.35,-.25,-.1, 0),each=4),8*3),         # 4
+                 percent=as.character(rep(c(100,75,50,25), 32*3)),    # 4
+                 discard.D1=rep(rep(c("no", "yes"), each=16),4*3),    # 2
+                 similarity=rep(rep(c("cKS-2","bKS-1","aSO1","aSO2"),each=32),3),  # 4
+                 Size=rep(c("100","050","025"),each=128),             # 3
+                 rate=
+                   c( 
+                     raten100, raten50, raten25
+                   ))
+
+# We have not discarded 100% of the data, so set these to NA
+sims$rate[(sims$discard.D1=="yes" & sims$percent=="100")]<-NA
+
+
+# Figure B5 (KS measures)
+
+source("stripFunctions.R")
+require(lattice)
+xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
+       subset=((sims$similarity=="cKS-2" | sims$similarity=="bKS-1") & ((sims$Size=="025") | (sims$Size=="100")) 
+       ),
+       layout=c(4,2),#as.table=TRUE,
+       key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
+                       columns=4, space="top",
+                       title="Percent of D used",cex.title=.9), 
+       xlab = expression(theta^"*"), ylab = "power",
+       
+       scales=list(y=list(tick.number=5), x=list(at=c(-.35,-.25,-.1, 0), labels=c("-0.35","-0.25","-0.10", "0")), 
+                   relation="same",alternating=c(1,1)), 
+       strip=my.strip6a,
+       panel = function(x, y,groups,subscripts) {
+         panel.grid(h = 0, v = 0)
+         panel.xyplot(x, y, pch=20,col=c(1,4,3,2))
+         panel.superpose(x,y,subscripts = subscripts,groups=groups,col=1:4, 
+                         panel.groups=panel.xyplot, type="l")#loess,
+       }#,
+)
+
+
+
+
+
