@@ -606,45 +606,46 @@ xyplot(rate~mu|twice.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
 
 
 
-############3 Appendix figures #########
+############ Appendix figures #########
 
 # These are not as maintained, and results are not in usual directory
 
-##### Figure A1 (type I error rate for max alpha = 50%)
+##### Figure A1 (type I error rate for equiv measures max alpha = 50%)
 
-# Figure A1a
-sims<-data.frame(mu=rep(rep(c(-1,-.75,-.5, -.25, -.1),each=4),2), 
-                 percent=as.character(rep(c(100,75,50,25), 10)),
-                 discard.D1=rep(c("no", "yes"), each=20),
-                 rate=
-                   c(0.035, 0.033, 0.031, 0.032, # mu = -1 drop=F
-                     0.054, 0.049, 0.047, 0.046, # mu = -.75
-                     0.092, 0.082, 0.080, 0.071, # mu=-0.5
-                     0.093, 0.082, 0.054, 0.050, #mu = -0.25
-                     0.031, 0.031, 0.028, 0.027, #mu = -0.1
-                     
-                     NA, 0.029, 0.029, 0.028, # mu = -1, drop=T
-                     NA, 0.046, 0.040, 0.038, # mu = -.75
-                     NA, 0.088, 0.067, 0.055, # mu= -.5
-                     NA, 0.068, 0.054, 0.043, # mu=-0.25
-                     NA, 0.015, 0.024, 0.026  #mu = -0.10
-                   ))
+load("output/resultsEQ2sidedelta0.2maxalpha0.5n100.RData")
+resF.n100<-results.prob.dropF.equiv[1:20]
+resT.n100<-results.prob.dropT.equiv[1:20]
+
+load("output/resultsEQ2sidedelta0.2maxalpha0.5n25.RData")
+resF.n25<-results.prob.dropF.equiv[1:20]
+resT.n25<-results.prob.dropT.equiv[1:20]
+
+
+# Figure A1
+sims<-data.frame(mu=rep(rep(c(-1,-.75,-.5, -.25, -.1),each=4),2*2), #5*4*2*2
+                 percent=as.character(rep(c(100,75,50,25), 10*2)), # 4*10*2
+                 discard.D1=rep(rep(c("no", "yes"), each=20),2), # 2*20*2
+                 Size=rep(c("100","025"),each=40),  # 2*40
+                 rate=c(resF.n100,resT.n100,
+                        resF.n25, resT.n25
+                        )
+                   )
+sims[(sims$percent==100)&(sims$discard.D1=="yes"),"rate"]<-NA
+
+source("stripFunctionsEqSim.R")
 
 require(lattice)
-xyplot(rate~mu|discard.D1,data=sims,groups=percent,subscripts = TRUE,
-       layout=c(2,1),
+trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
+
+xyplot(rate~mu|discard.D1*Size,data=sims,groups=percent,subscripts = TRUE,
+       layout=c(2,2),
        key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,columns=4, space="top",
-                       title="Percent of D used",cex.title=1), 
+                       title="Percent of D used",cex.title=.9), 
        xlab = expression(theta^"*"), ylab = "type I error rate",
        
        scales=list(y=list(at=c(0,.05,.10,.15,.20,.25), limits=c(0,.25)), 
                    x=list(at=c(-1,-.75, -.5,-.25,-.10)), relation="same",alternating=c(1,1)), #x=list(at=c(-1,-.5,-.25)
-       strip=strip.custom(strip.names = c(TRUE),strip.levels=c(T),
-                          var.name=c(expression(paste("Discard ", D[1]))),
-                          sep=expression(paste(": ")),
-                          factor.levels=c(expression(paste("no")), 
-                                          expression(paste("yes")))
-       ),
+       strip=my.stripA1,
        
        panel = function(x, y,groups,subscripts) {
          panel.grid(h = 0, v = 0)
@@ -653,14 +654,18 @@ xyplot(rate~mu|discard.D1,data=sims,groups=percent,subscripts = TRUE,
                          panel.groups=panel.xyplot, type="l")#loess,
        }
 )
+trellis.par.set(layout.heights = list(axis.xlab.padding=1, axis.panel=1)) # default is 1,1
 
-# Figure A1b
 
-load("resultsKSWeibullmax502n25.RData")
+# Figure A2 (does not exist)
+
+load("output/resultsEQ2sidedelta0.2maxalpha0.5n25.RData")
+
 sims<-data.frame(mu=rep(rep(c(-1,-.75,-.5, -.25, -.1),each=4),2), 
                  percent=as.character(rep(c(100,75,50,25), 10)),
                  discard.D1=rep(c("no", "yes"), each=20),
-                 rate=results.prob.dropF.wb, results.prob.dropT.wb
+                 rate=c(results.prob.dropF.equiv[1:20], 
+                        results.prob.dropT.equiv[1:20])
 )
 # We have not discarded 100% of the data, so set these to NA
 sims$rate[(sims$discard.D1=="yes" & sims$percent=="100")]<-NA
@@ -675,10 +680,10 @@ xyplot(rate~mu|discard.D1,data=sims,groups=percent,subscripts = TRUE,
        scales=list(y=list(at=c(0,.05,.10,.15,.20,.25), limits=c(0.0,.25)), 
                    x=list(at=c(-1,-.75, -.5,-.25,-.10)), relation="same",alternating=c(1,1)), #x=list(at=c(-1,-.5,-.25)
        strip=strip.custom(strip.names = c(TRUE),strip.levels=c(T),
-                          var.name=c(expression(paste("Discard ", D[1]))),
-                          sep=expression(paste(": ")),
-                          factor.levels=c(expression(paste("no")), 
-                                          expression(paste("yes")))
+                          var.name=c(""),
+                          sep=expression(paste("")),
+                          factor.levels=c(expression(paste("Keep ", D[1])), 
+                                          expression(paste("Discard ", D[1])))
        ),
        
        panel = function(x, y,groups,subscripts) {
