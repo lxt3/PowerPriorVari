@@ -208,6 +208,7 @@ legend(x=0.1, y=1, legend = c("1-sided Weibull(0.65, 3.0)", "2-sided Weibull(0.4
 
 #path.stem<-paste0(getwd(),"/PaperFigures/")  # change to this when I transfer RDatas to PaperFigures
 path.stem<-paste0(getwd(),"/output/")
+source("figureFunctionEqSim.R")
 
 # get results for each n
 res.100<-figureFunctionEqSim(100, path.stem)
@@ -246,14 +247,14 @@ xyplot(rate~mu|Size*similarity,data=sims,groups=percent,subscripts = TRUE,
        layout=c(3,2),#as.table=TRUE,
        key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
-                       title="Percent of D used",cex.title=.9), 
+                       title="Percent of D used",cex.title=.85), 
        xlab = expression(paste(theta^"*")), 
        ylab = expression(paste(alpha[0],group("(",list(D[0],D[1]),")"))),
        
        scales=list(y=list(limits=c(0.0,1), at=seq(0.0,1,by=0.25)), 
                    #x=list(at=c(-1,-.75,-.5, -.25, 0, .25,.5,.75,1)),
                    x=list(at=c(-1,-.5,  0, .5,1)),
-                   tck=c(1,0),relation="same",alternating=c(1,1)), #x=list(at=c(-1,-.5,-.25)
+                   tck=c(1,0),relation="same",alternating=c(1,1)), 
        strip=my.strip5a,
        panel = function(x, y,subscripts=subscripts,groups) {
          panel.xyplot(x, y,pch=20,col=c(1,4,3,2))
@@ -271,20 +272,18 @@ library(lattice)
 source("stripFunctionsEqSim.R")
 
 trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
-
 xyplot(rate~mu|Size*similarity,data=sims,groups=percent,subscripts = TRUE,
        subset=(sims$similarity=="aSO1" | sims$similarity=="aSO2"),
        layout=c(3,2),#as.table=TRUE,
        key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
-                       title="Percent of D used",cex.title=.9), 
+                       title="Percent of D used",cex.title=.85), 
        xlab = expression(paste(theta^"*")), 
        ylab = expression(paste(alpha[0],group("(",list(D[0],D[1]),")"))),
        
        scales=list(y=list(limits=c(0.0,1), at=seq(0.0,1,by=0.25)), 
-                   #x=list(at=c(-1,-.75,-.5, -.25, 0, .25,.5,.75,1)),
                    x=list(at=c(-1,-.5,  0, .5,1)),
-                   tck=c(1,0),relation="same",alternating=c(1,1)), #x=list(at=c(-1,-.5,-.25)
+                   tck=c(1,0),relation="same",alternating=c(1,1)), 
        strip=my.strip5,
        panel = function(x, y,subscripts=subscripts,groups) {
          panel.xyplot(x, y,pch=20,col=c(1,4,3,2))
@@ -325,20 +324,23 @@ sims$rate[(sims$discard.D1=="yes" & sims$percent=="100")]<-NA
 
 library(lattice)
 source("stripFunctionsEqSim.R")
+
+trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
 xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
        subset=((sims$similarity=="cKS-2" | sims$similarity=="bKS-1") & 
                  ((sims$Size=="025") | (sims$Size=="100")) 
                ),
-       layout=c(4,2),#as.table=TRUE,
+       layout=c(4,2),
        key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
-                       title="Percent of D used",cex.title=.9), 
+                       title="Percent of D used",cex.title=.85), 
        xlab = expression(paste(theta^"*")), 
        ylab = "type I error rate",
        
        scales=list(y=list(limits=c(0.0,.25), at=seq(0.0,.25,by=0.05)), 
-                   x=list(at=c(-1,-.75,-.5, -.25,-0.1), labels=c("-1","-0.75","-0.50","-0.25","-0.10"),cex=.7),
-                   tck=c(1,0),relation="same",alternating=c(1,1)), 
+                   x=list(at=c(-1,-.75,-.5, -.25,-0.1), 
+                          labels=c("   -1.0","-0.75","-0.50 ","-0.25  ","-0.1")),
+                   tck=c(1,0),relation="same",alternating=c(1,1), cex=0.7), 
        strip=my.strip6a,
        panel = function(x, y,subscripts=subscripts,groups) {
          panel.xyplot(x, y,pch=20,col=c(1,4,3,2))
@@ -346,24 +348,28 @@ xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = 
                          panel.groups=panel.xyplot, type="l")
        }
 )
+trellis.par.set(layout.heights = list(axis.xlab.padding=1)) # default is 1
+
 
 # Figure 4b (SO measures)
 
 require(lattice)
 source("stripFunctionsEqSim.R")
+
+trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
 xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
        subset=((sims$similarity=="aSO2" | sims$similarity=="aSO1") & ((sims$Size=="025") | (sims$Size=="100"))),
        layout=c(4,2),#as.table=TRUE,
        key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
-                       title="Percent of D used",cex.title=.9), 
+                       title="Percent of D used",cex.title=.85), 
        xlab = expression(paste(theta^"*")), 
        ylab = "type I error rate",
        
        scales=list(y=list(limits=c(0.0,.25), at=seq(0.0,.25,by=0.05)), 
-                   #x=list(at=c(-1,-.75,-.5, -.25, 0, .25,.5,.75,1)),
-                   x=list(at=c(-1,-.75,-.5, -.25,-.1), labels=c("-1","-0.75","-0.50","-0.25","-0.10"),cex=.7),
-                   tck=c(1,0),relation="same",alternating=c(1,1)), #x=list(at=c(-1,-.5,-.25)
+                   x=list(at=c(-1,-.75,-.5, -.25,-.1), 
+                          labels=c("   -1.0","-0.75","-0.50 ","-0.25   ","-0.1")),
+                   tck=c(1,0),relation="same",alternating=c(1,1),cex=.7), 
        strip=my.strip6b,
        panel = function(x, y,subscripts=subscripts,groups) {
          panel.xyplot(x, y,pch=20,col=c(1,4,3,2))
@@ -371,6 +377,8 @@ xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = 
                          panel.groups=panel.xyplot, type="l")#loess,
        }
 )
+trellis.par.set(layout.heights = list(axis.xlab.padding=1)) # default is 1
+
 
 #### Figure 6 (bias)
 
@@ -394,18 +402,19 @@ sims<-data.frame(mu=rep(rep(c(-1,-.75,-.5,-.25,-.1,0,.1,.25,.5,.75,1),each=4),16
 ##n=100
 source("stripFunctionsEqSim.R")
 require(lattice)
-trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
 
+trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
 xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
        subset= sims$Size=="100",
        layout=c(4,2),#as.table=TRUE,
        key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
-                       title="Percent of D used",cex.title=.9), 
+                       title="Percent of D used",cex.title=.85), 
        xlab = expression(theta^"*"), ylab = expression(paste("Bias of ", theta^"*")),
        
-       scales=list(y=list(tick.number=6), x=list(at=c(-1,-.5,0,.5,1)), 
-                   relation="same",alternating=c(1,1)), 
+       scales=list(y=list(tick.number=6), x=list(at=c(-1,-.5,0,.5,1), 
+                                                 labels=c(" -1.0","-0.5","0", "0.5","1.0 ")), 
+                   cex=.7, tck=c(1,0), relation="same",alternating=c(1,1)), 
        strip=my.strip9a,
        panel = function(x, y,groups,subscripts) {
          panel.grid(h = 0, v = 0)
@@ -414,23 +423,25 @@ xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
                          panel.groups=panel.xyplot, type="l")#loess,
        }#,
 )
+trellis.par.set(layout.heights = list(axis.xlab.padding=1)) # default is 1
 
 
 ##n=25
 source("stripFunctionsEqSim.R")
 require(lattice)
-trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
 
+trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
 xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
        subset= sims$Size=="025",
        layout=c(4,2),
        key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
-                       title="Percent of D used",cex.title=.9), 
+                       title="Percent of D used",cex.title=.85), 
        xlab = expression(theta^"*"), ylab = expression(paste("Bias of ", theta^"*")),
        
-       scales=list(y=list(tick.number=6), x=list(at=c(-1,-.5,0,.5,1)), 
-                   relation="same",alternating=c(1,1)), 
+       scales=list(y=list(tick.number=6), x=list(at=c(-1,-.5,0,.5,1), 
+                                                 labels=c(" -1.0","-0.5","0", "0.5","1.0 ")), 
+                   cex=.7, tck=c(1,0), relation="same",alternating=c(1,1)), 
        strip=my.strip9a,
        panel = function(x, y,groups,subscripts) {
          panel.grid(h = 0, v = 0)
@@ -439,12 +450,15 @@ xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
                          panel.groups=panel.xyplot, type="l")
        }#,
 )
+trellis.par.set(layout.heights = list(axis.xlab.padding=1)) # default is 1
 
 
 #### Figure 5 Power uses a different figureFunction
 
 #path.stem<-paste0(getwd(),"/PaperFigures/")  # change to this when I transfer RDatas to PaperFigures
 path.stem<-paste0(getwd(),"/output/")
+
+source("figureFunctionPowerEqSim.R")
 
 # get results for each n
 raten100<-figureFunctionPowerEqSim(100, path.stem)
@@ -470,20 +484,20 @@ sims$rate[(sims$discard.D1=="yes" & sims$percent=="100")]<-NA
 
 source("stripFunctionsEqSim.R")
 require(lattice)
-trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
+
+trellis.par.set(layout.heights = list(axis.xlab.padding=0))#, # default is 1
 xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
        subset=((sims$similarity=="cKS-2" | sims$similarity=="bKS-1") & ((sims$Size=="025") | (sims$Size=="100")) 
        ),
        layout=c(4,2),#as.table=TRUE,
        key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
-                       title="Percent of D used",cex.title=.9), 
+                       title="Percent of D used",cex.title=.85), 
        xlab = expression(theta^"*"), ylab = "power", ylim=c(0,1.1), 
        
        scales=list(y=list(at=c(.2,.4,.6,.8,1)), 
-                   x=list(at=c(-.35,-.25,-.1, 0), labels=c("-0.35","-0.25","-0.10", "0")), 
-                   relation="same",alternating=c(1,1)),
-       #plot.args=list(mgp=c(1,1,0)),
+                   x=list(at=c(-.35,-.25,-.1, 0), labels=c(" -0.35","-0.25","-0.10", "0 ")), cex=.7,
+                   tck=c(1,0),relation="same",alternating=c(1,1)), 
        strip=my.strip6a,
        panel = function(x, y,groups,subscripts) {
          panel.grid(h = 0, v = 0)
@@ -492,6 +506,9 @@ xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = 
                          panel.groups=panel.xyplot, type="l")#loess,
        }#,
 )
+trellis.par.set(layout.heights = list(axis.xlab.padding=1, axis.panel=1)) # default is 1,1
+
+
 
 
 # Figure 5b (SO measures)
@@ -505,12 +522,12 @@ xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = 
        layout=c(4,2),#as.table=TRUE,
        key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
-                       title="Percent of D used",cex.title=.9), 
+                       title="Percent of D used",cex.title=.85), 
        xlab = expression(theta^"*"), ylab = "power",
        
        scales=list(y=list(at=c(0,.2,.4,.6,.8,1)),#tick.number=6), 
-                   x=list(at=c(-.35,-.25,-.1, 0), labels=c("-0.35","-0.25","-0.10", "0")), 
-                   relation="same",alternating=c(1,1)), #x=list(at=c(-1,-.5,-.25)
+                   x=list(at=c(-.35,-.25,-.1, 0), labels=c(" -0.35","-0.25","-0.10", "0 ")), cex=.7,
+                   tck=c(1,0),relation="same",alternating=c(1,1)), 
        strip=my.strip6b,
        panel = function(x, y,groups,subscripts) {
          panel.grid(h = 0, v = 0)
@@ -526,6 +543,7 @@ trellis.par.set(layout.heights = list(axis.xlab.padding=1, axis.panel=1)) # defa
 
 #path.stem<-paste0(getwd(),"/PaperFigures/")  # change to this when I transfer RDatas to PaperFigures
 path.stem<-paste0(getwd(),"/output/")
+source("figureFunctionExtEqSim.R")
 
 
 # Get exteranl data from figureFunctionExt
@@ -554,19 +572,19 @@ sims<-data.frame(mu=rep(rep(c(-1,-.75,-.5,-.25,-.1),each=4),8*2),         # 4
 ## n=100
 source("stripFunctionsEqSim.R")
 require(lattice)
-trellis.par.set(layout.heights = list(axis.xlab.padding=0, axis.panel=0)) # default is 1,1
 
+trellis.par.set(layout.heights = list(axis.xlab.padding=0, axis.panel=0)) # default is 1,1
 xyplot(rate~mu|twice.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
        subset= sims$Size=="100",
        layout=c(4,2),
        key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
-                       title="Percent of D used",cex.title=.9), 
+                       title="Percent of D used",cex.title=.85), 
        xlab = expression(theta^"*"), ylab = expression(paste("SD of ", theta)),
        
        scales=list(y=list(tick.number=6), x=list(at=c(-1,-.75,-.5,-.25,-.1),cex=.7,
-                                                 labels=c("-1","-0.75","-0.50","-0.25","-0.10")), 
-                   relation="same",alternating=c(1,1)), 
+                                                 labels=c("  -1","-0.75","-0.50","-0.25  "," -0.1")), 
+                   tck=c(1,0), relation="same",alternating=c(1,1)), 
        strip=my.strip6aaa,
        panel = function(x, y,groups,subscripts) {
          panel.grid(h = 0, v = 0)
@@ -581,19 +599,19 @@ trellis.par.set(layout.heights = list(axis.xlab.padding=1, axis.panel=1)) # defa
 ## n=25
 source("stripFunctionsEqSim.R")
 require(lattice)
-trellis.par.set(layout.heights = list(axis.xlab.padding=0, axis.panel=0)) # default is 1,1
 
+trellis.par.set(layout.heights = list(axis.xlab.padding=0, axis.panel=0)) # default is 1,1
 xyplot(rate~mu|twice.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
        subset=sims$Size=="025",
        layout=c(4,2),
        key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
-                       title="Percent of D used",cex.title=.9), 
+                       title="Percent of D used",cex.title=.85), 
        xlab = expression(theta^"*"), ylab = expression(paste("SD of ", theta)),
        
-       scales=list(y=list(tick.number=6), x=list(at=c(-1,-.75,-.5,-.25,-.1), 
-                                                 labels=c("-1","-0.75","-0.50","-0.25","-0.10"), cex=.7), 
-                   relation="same",alternating=c(1,1)), 
+       scales=list(y=list(tick.number=6), x=list(at=c(-1,-.75,-.5,-.25,-.1), cex=.7,
+                                                 labels=c("  -1","-0.75","-0.50","-0.25  "," -0.1")), 
+                   tck=c(1,0), relation="same",alternating=c(1,1)), 
        strip=my.strip6aaa,
        panel = function(x, y,groups,subscripts) {
          panel.grid(h = 0, v = 0)
@@ -602,8 +620,7 @@ xyplot(rate~mu|twice.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
                          panel.groups=panel.xyplot, type="l")#loess,
        }#,
 )
-
-
+trellis.par.set(layout.heights = list(axis.xlab.padding=1, axis.panel=1)) # default is 1,1
 
 
 ############ Appendix figures #########
@@ -635,16 +652,19 @@ sims[(sims$percent==100)&(sims$discard.D1=="yes"),"rate"]<-NA
 source("stripFunctionsEqSim.R")
 
 require(lattice)
-trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
 
+trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
 xyplot(rate~mu|discard.D1*Size,data=sims,groups=percent,subscripts = TRUE,
        layout=c(2,2),
-       key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,columns=4, space="top",
+       key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
+                       columns=4, space="top",
                        title="Percent of D used",cex.title=.9), 
        xlab = expression(theta^"*"), ylab = "type I error rate",
        
        scales=list(y=list(at=c(0,.05,.10,.15,.20,.25), limits=c(0,.25)), 
-                   x=list(at=c(-1,-.75, -.5,-.25,-.10)), relation="same",alternating=c(1,1)), #x=list(at=c(-1,-.5,-.25)
+                   x=list(at=c(-1,-.75, -.5,-.25,-.10),
+                          labels=c(" -1.0","-0.75","-0.50","-0.25  "," -0.10")), 
+                   tck=c(1,0), relation="same",alternating=c(1,1)), 
        strip=my.stripA1,
        
        panel = function(x, y,groups,subscripts) {
@@ -750,27 +770,29 @@ sims<-data.frame(mu=rep(rep(c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1),each=4),
 # Figure B2 (KS measures)
 
 library(lattice)
-source("stripFunctions.R")
+source("stripFunctionsEqSim.R")
+
+trellis.par.set(layout.heights = list(axis.xlab.padding=0, axis.panel=0)) # default is 1,1
 xyplot(rate~mu|Size*similarity,data=sims,groups=percent,subscripts = TRUE,
        subset=(sims$similarity=="cKS-2" | sims$similarity=="bKS-1"),
        layout=c(3,2),#as.table=TRUE,
        key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
-                       title="Percent of D used",cex.title=.9), 
+                       title="Percent of D used",cex.title=.85), 
        xlab = expression(paste(theta^"*")), 
        ylab = expression(paste(alpha[0],group("(",list(D[0],D[1]),")"))),
        
        scales=list(y=list(limits=c(0.0,1), at=seq(0.0,1,by=0.25)), 
-                   #x=list(at=c(-1,-.75,-.5, -.25, 0, .25,.5,.75,1)),
                    x=list(at=c(-1,-.5,  0, .5,1)),
-                   tck=c(1,0),relation="same",alternating=c(1,1)), #x=list(at=c(-1,-.5,-.25)
-       strip=my.strip5a,
+                   tck=c(1,0),relation="same",alternating=c(1,1), cex=.7), 
+       strip=my.stripB2,
        panel = function(x, y,subscripts=subscripts,groups) {
          panel.xyplot(x, y,pch=20,col=c(1,4,3,2))
          panel.superpose(x,y,subscripts=subscripts,groups=groups,col=1:4, 
                          panel.groups=panel.xyplot, type="l")#loess,
        }
 )
+trellis.par.set(layout.heights = list(axis.xlab.padding=1, axis.panel=1)) # default is 1,1
 
 
 ## Figure B3 (type I error rates)
@@ -799,30 +821,34 @@ sims$rate[(sims$discard.D1=="yes" & sims$percent=="100")]<-NA
 
 
 library(lattice)
-source("stripFunctions.R")
+source("stripFunctionsEqSim.R")
+
+trellis.par.set(layout.heights = list(axis.xlab.padding=0, axis.panel=0)) # default is 1,1
 xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
        subset=((sims$similarity=="cKS-2" | sims$similarity=="bKS-1") & ((sims$Size=="025") | (sims$Size=="100")) 
        ),
        layout=c(4,2),#as.table=TRUE,
        key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
-                       title="Percent of D used",cex.title=.9), 
+                       title="Percent of D used",cex.title=.85), 
        xlab = expression(paste(theta^"*")), 
        ylab = "type I error rate",
        
        scales=list(y=list(limits=c(0.0,.25), at=seq(0.0,.25,by=0.05)), 
-                   x=list(at=c(-1,-.75,-.5, -.25,-0.1), labels=c("-1","-0.75","-0.50","-0.25","-0.10"),cex=.7),
-                   tck=c(1,0),relation="same",alternating=c(1,1)), 
-       strip=my.strip6a,
+                   x=list(at=c(-1,-.75,-.5, -.25,-0.1), 
+                          labels=c("   -1.0","-0.75","-0.50  ","-0.25    ","-0.1"),cex=.7),
+                   tck=c(1,0),relation="same",alternating=c(1,1),cex=.7), 
+       strip=my.stripB4,
        panel = function(x, y,subscripts=subscripts,groups) {
          panel.xyplot(x, y,pch=20,col=c(1,4,3,2))
          panel.superpose(x,y,subscripts=subscripts,groups=groups,col=1:4, 
                          panel.groups=panel.xyplot, type="l")
        }
 )
+trellis.par.set(layout.heights = list(axis.xlab.padding=1, axis.panel=1)) # default is 1,1
 
 
-#### Figure B6 (bias)
+#### Figure B5 (bias)
 
 # get results for bias
 raten100<-res.100$bias
@@ -842,19 +868,22 @@ sims<-data.frame(mu=rep(rep(c(-1,-.75,-.5,-.25,-.1,0,.1,.25,.5,.75,1),each=4),16
                    ))
 
 ##n=100
-source("stripFunctions.R")
+source("stripFunctionsEqSim.R")
 require(lattice)
+
+trellis.par.set(layout.heights = list(axis.xlab.padding=0, axis.panel=0)) # default is 1,1
 xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
        subset= sims$Size=="100",
-       layout=c(4,2),#as.table=TRUE,
+       layout=c(4,2),
        key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
-                       title="Percent of D used",cex.title=.9), 
+                       title="Percent of D used",cex.title=.85), 
        xlab = expression(theta^"*"), ylab = expression(paste("Bias of ", theta^"*")),
        
-       scales=list(y=list(tick.number=6), x=list(at=c(-1,-.5,0,.5,1)), 
-                   relation="same",alternating=c(1,1)), 
-       strip=my.strip9a,
+       scales=list(y=list(tick.number=6), x=list(at=c(-1,-.5,0,.5,1), 
+                                                 labels=c(" -1.0", "-0.5", "0.0", "0.5", "1.0 ")), 
+                   tck=c(1,0), relation="same",alternating=c(1,1), cex=0.7), 
+       strip=my.stripB5,
        panel = function(x, y,groups,subscripts) {
          panel.grid(h = 0, v = 0)
          panel.xyplot(x, y, pch=20,col=c(1,4,3,2))
@@ -862,22 +891,26 @@ xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
                          panel.groups=panel.xyplot, type="l")#loess,
        }#,
 )
+trellis.par.set(layout.heights = list(axis.xlab.padding=1, axis.panel=1)) # default is 1,1
 
 
 ##n=25
-source("stripFunctions.R")
+source("stripFunctionsEqSim.R")
 require(lattice)
+
+trellis.par.set(layout.heights = list(axis.xlab.padding=0, axis.panel=0)) # default is 1,1
 xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
        subset= sims$Size=="025",
        layout=c(4,2),
        key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
-                       title="Percent of D used",cex.title=.9), 
+                       title="Percent of D used",cex.title=.85), 
        xlab = expression(theta^"*"), ylab = expression(paste("Bias of ", theta^"*")),
        
-       scales=list(y=list(tick.number=6), x=list(at=c(-1,-.5,0,.5,1)), 
-                   relation="same",alternating=c(1,1)), 
-       strip=my.strip9a,
+       scales=list(y=list(tick.number=6), x=list(at=c(-1,-.5,0,.5,1), 
+                                                 labels=c(" -1.0", "-0.5", "0.0", "0.5", "1.0 ")), 
+                   tck=c(1,0), relation="same",alternating=c(1,1), cex=0.7), 
+       strip=my.stripB5,
        panel = function(x, y,groups,subscripts) {
          panel.grid(h = 0, v = 0)
          panel.xyplot(x, y, pch=20,col=c(1,4,3,2))
@@ -885,6 +918,7 @@ xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
                          panel.groups=panel.xyplot, type="l")
        }#,
 )
+trellis.par.set(layout.heights = list(axis.xlab.padding=1, axis.panel=1)) # default is 1,1
 
 
 
@@ -915,22 +949,23 @@ sims<-data.frame(mu=rep(rep(c(-.35,-.25,-.1, 0),each=4),8*3),         # 4
 sims$rate[(sims$discard.D1=="yes" & sims$percent=="100")]<-NA
 
 
-# Figure B5 (KS measures)
-
-source("stripFunctions.R")
+source("stripFunctionsEqSim.R")
 require(lattice)
+
+trellis.par.set(layout.heights = list(axis.xlab.padding=0, axis.panel=0)) # default is 1,1
 xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
        subset=((sims$similarity=="cKS-2" | sims$similarity=="bKS-1") & ((sims$Size=="025") | (sims$Size=="100")) 
        ),
        layout=c(4,2),#as.table=TRUE,
        key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
-                       title="Percent of D used",cex.title=.9), 
+                       title="Percent of D used",cex.title=.85), 
        xlab = expression(theta^"*"), ylab = "power",
        
-       scales=list(y=list(tick.number=5), x=list(at=c(-.35,-.25,-.1, 0), labels=c("-0.35","-0.25","-0.10", "0")), 
-                   relation="same",alternating=c(1,1)), 
-       strip=my.strip6a,
+       scales=list(y=list(tick.number=5), x=list(at=c(-.35,-.25,-.1, 0), 
+                                                 labels=c("  -0.35","  -0.25","-0.10", "0")), 
+                   tck=c(1,0),relation="same",alternating=c(1,1),cex=.7), 
+       strip=my.stripB4,
        panel = function(x, y,groups,subscripts) {
          panel.grid(h = 0, v = 0)
          panel.xyplot(x, y, pch=20,col=c(1,4,3,2))
@@ -938,7 +973,7 @@ xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = 
                          panel.groups=panel.xyplot, type="l")#loess,
        }#,
 )
-
+trellis.par.set(layout.heights = list(axis.xlab.padding=1, axis.panel=1)) # default is 1,1
 
 
 
