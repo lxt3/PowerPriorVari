@@ -20,7 +20,7 @@ my.strip4a <- function(which.given, ..., factor.levels,var.name) {
 # Figure 3a
 my.strip5a <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg) {
   levs <- if (which.given == 1) c("25","50", "100") #levels for your second factor (x2)
-  else c(expression(paste("EQ 1-sided")), expression(paste("EQ 2-sided")) ) #levels for your first factor (x1)
+  else c(expression(paste(delta," Weibull")), expression(paste(delta," identity")) ) #levels for your first factor (x1)
   varnames<-c( expression(paste("Sample Size")), expression("Similarity"))
   strip.default(which.given, ..., factor.levels = levs, var.name=varnames,
                 strip.names = c(TRUE),strip.levels=c(T),
@@ -48,7 +48,7 @@ my.strip5 <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg
 # Figure 4a and 5a (EQ measures)
 my.strip6a <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg) {
   levs <- if (which.given == 1)  c(expression(paste("Keep ", D[1])), expression(paste("Discard ", D[1]))) #levels for your second factor (x2)
-  else if (which.given == 2) c(expression(paste("EQ 1-sided")), expression(paste("EQ 2-sided")) ) #levels for your first factor (x1)
+  else if (which.given == 2) c(expression(paste(delta, " Weibull")), expression(paste(delta, " identity")) ) #levels for your first factor (x1)
   else c("25", "100")
   
   varnames<-c(expression(""), expression("Similarity: "), 
@@ -83,7 +83,7 @@ my.strip6b <- function(which.given, ..., factor.levels,var.name,par.strip.text, 
 my.strip6aaa <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg) {
   levs <- if (which.given == 1)  c("no", "yes") #levels for your second factor (x2)
   else if (which.given == 2) c(expression(paste("SO 1-sided")), expression(paste("SO 2-sided")) ,
-                               expression(paste("EQ 1-sided")), expression(paste("EQ 2-sided")) ) #levels for your first factor (x1)
+                               expression(paste(delta," Weibull")), expression(paste(delta, "Identity")) ) #levels for your first factor (x1)
 
   text.size<-if(which.given==1) list(cex=.7) else if(which.given==2) list(cex=.7)
   
@@ -101,7 +101,7 @@ my.strip6aaa <- function(which.given, ..., factor.levels,var.name,par.strip.text
 my.strip9a <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg) {
   levs <- if (which.given == 1)  c(expression(paste("Keep ", D[1])), expression(paste("Discard ", D[1]))) #levels for your second factor (x2)
   else if (which.given == 2) c(expression(paste("SO 1-sided")), expression(paste("SO 2-sided")) ,
-                               expression(paste("EQ 1-sided")), expression(paste("EQ 2-sided")) ) #levels for your first factor (x1)
+                               expression(paste(delta," Weibull")), expression(paste(delta, "Identity")) ) #levels for your first factor (x1)
   text.size<-if(which.given==1) list(cex=.7) else if(which.given==2) list(cex=.7)
   
   varnames<-c(expression(""), expression("Similarity: "), 
