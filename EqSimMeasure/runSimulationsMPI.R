@@ -2,7 +2,7 @@
 
 if(!dir.exists("output")) dir.create("output")
 
-path.to.files<-paste0(getwd(),"/output/")
+path.to.files<-paste0(getwd(),"/output/EQ/")
 
 seed.<-3
 
@@ -12,11 +12,11 @@ nworkers<-np-1
 n0=25
 n<-n0 
 
-external=T#F#T
+external=F#T
 
 OC<-"typeI" #"power" # "typeI"
-#mus=c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1)  # type I and bias and alpha0
-mus=c(-1,-.75,-.5, -.25, -.1)  # External
+mus=c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1)  # type I and bias and alpha0
+#mus=c(-1,-.75,-.5, -.25, -.1)  # External
 #mus=c(-.35, -.25, -.1,0) # power
 
 mu0<- 0
@@ -136,9 +136,9 @@ if(is.null(sinkfname)){
 
 set.seed(seed.) # used in paper (same seed for every parameter configuation)
 
-# generate D0
+# generate D0 and standardize
 D0<-rnorm(mean=mu0, n=n0)
-
+D0<-(D0-mean(D0))/sd(D0)
 
 # run nsim simulations per parameter configuration (percent and mu value)
 

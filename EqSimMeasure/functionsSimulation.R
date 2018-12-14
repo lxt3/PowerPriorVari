@@ -134,8 +134,9 @@ for(i in 1:rank.nsim){
   
   if((i/1000)%in%c(1:20)) print(i)
   
-  # generate ith D from this mu
+  # generate ith D from this mu and scale to give it sd=1
   D<-rnorm(mean=mu, n=n, sd=1)
+  D<-D/sd(D)
   
   # set D1 = x% of D
   D1<- D[1:(percent*n)]
