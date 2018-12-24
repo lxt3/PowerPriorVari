@@ -1,7 +1,8 @@
 # One-arm trial (OPC) example
 
 # set different seeds per processor (diff=TRUE)
-comm.set.seed(seed., diff=TRUE)  
+#comm.set.seed(seed., diff=TRUE)  
+comm.set.seed(seed.init, diff=TRUE)  
 
 # Generate nsim current data sets and compute posterior inference using prior D0
 # Definition of FUN is in functionsSimulation.R
