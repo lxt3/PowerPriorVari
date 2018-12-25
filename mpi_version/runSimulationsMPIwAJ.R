@@ -108,10 +108,10 @@ if(discfun=="equiv" && OC=="power" ){
 }
 
 # new for array job
-fname.core<-paste0(fname.core, sge)
+fname.core<-paste0(fname.core)
 
 # sink file name
-sinkfname<-paste0(fname.core,n0,".txt")
+sinkfname<-paste0(fname.core,n0,sge,".txt")
 
 
 nsim<-15000/nworkers
@@ -122,9 +122,9 @@ percents=rev(c(.25,.5,.75,1))
 
 
 if(external==T) {
-  fname<-paste0(fname.core, n0, "Ext.RData") 
+  fname<-paste0(fname.core, n0, sge, "Ext.RData") 
 }else { 
-  fname<-paste0(fname.core, n0, ".RData")
+  fname<-paste0(fname.core, n0, sge, ".RData")
 }
 
 # source functions
@@ -145,7 +145,7 @@ results.SDF<-vector(length=dims) #
 
 
 if(is.null(sinkfname)){
-  sinkfname<-paste(fname.core,n0,".txt",sep="")
+  sinkfname<-paste(fname.core,n0, sge, ".txt",sep="")
 }
 
 
