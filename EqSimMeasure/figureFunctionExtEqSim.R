@@ -5,7 +5,7 @@ figureFunctionExtEqSim<-function(n.use, path.stem) {
 
 # same for all characteristics
 fname.reg.EQ1<-paste(path.stem,"resultsEQ1sideDelta0.2maxalpha1n",n.use,"Ext.RData", sep="") # EQ 1-sided
-fname.reg.EQ2<-paste(path.stem,"resultsEQ2sideDelta0.2maxalpha1n",n.use,"Ext.RData", sep="") # EQ 2-sided
+fname.reg.EQ2<-paste(path.stem,"resultsEQ1sideDeltaPonly0.2maxalpha1n",n.use,"Ext.RData", sep="") # EQ 2-sided
 fname.reg.Ord1<-paste(path.stem,"resultsSOWeibull1siden",n.use,"Ext.RData", sep="")  # Stoch ord 1-sided
 fname.reg.Ord2<-paste(path.stem,"resultsSOWeibull2siden",n.use,"Ext.RData", sep="")  # Stoch ord 2-sided
 

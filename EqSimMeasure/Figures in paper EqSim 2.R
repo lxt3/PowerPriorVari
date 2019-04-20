@@ -1,7 +1,7 @@
 ### Figure 1
 
-op <- par(mar=c(1.5,1,1,.25),mai=c(.2,.0,.2,.0),mgp=c(3,0,0),
-          font.main="TimesRoman")
+op <- par(mar=c(1.5,1,1,.25),mai=c(.2,.0,.2,.0),mgp=c(3,0,0))#,
+         # font.main="TimesRoman")
 
 layout(matrix(c(1,2,3,4), 2, 2, byrow = TRUE))
 
@@ -47,6 +47,8 @@ lines(x3,y3,col=4,lwd=2)
 lines(x4,y4,col=5,lwd=2)
 
 segments(x0=0, y0=0, x1=0,y1=dnorm(0),lty=2)
+
+legend(x=3.5, y=.35, fill=c(2,5,4,3), legend=c("larger n", "...", "...", "smaller n"))
 
 
 ## Figure 1b
@@ -191,7 +193,7 @@ par(op)
 xx<-seq(0,1,.01)
 yy<-pweibull(xx, shape = 3, scale = .65)
 
-plot(xx,yy, type="l", xlab="p",
+plot(xx,yy, type="l", xlab="",#"p",
      #expression(paste(p, " = ", p,"(",theta, " < ", theta[0],")")),
      ylab=expression(paste(alpha[0],group("(",list(D[0],D[1]),")"))),
      bty="n",xaxt="n", yaxt="n")
@@ -515,6 +517,7 @@ trellis.par.set(layout.heights = list(axis.xlab.padding=1, axis.panel=1)) # defa
 
 source("stripFunctionsEqSim.R")
 require(lattice)
+
 trellis.par.set(layout.heights = list(axis.xlab.padding=0, axis.panel=0)) # default is 1,1
 xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
        subset=((sims$similarity=="aSO2" | sims$similarity=="aSO1") & ((sims$Size=="025") | (sims$Size=="100")) 
@@ -548,7 +551,7 @@ source("figureFunctionExtEqSim.R")
 
 # Get exteranl data from figureFunctionExt
 raten100Ext<-figureFunctionExtEqSim(100, path.stem)$sdF
-raten50Ext<-figureFunctionExtEqSim(50, path.stem)$sdF
+#raten50Ext<-figureFunctionExtEqSim(50, path.stem)$sdF
 raten25Ext<-figureFunctionExtEqSim(25, path.stem)$sdF
 
 # get results for sdF from internal data

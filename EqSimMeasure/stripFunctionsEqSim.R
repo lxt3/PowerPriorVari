@@ -2,7 +2,6 @@
 # bg colors for strips
 bgColors<-c("white","light grey","white")
 
-
 ## Borrowing amounts
 
 # Tester for showing all similarity measures (factors) on one figure (Figure 3)
@@ -43,6 +42,22 @@ my.strip5 <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg
   )
 }
 
+
+# Slide for MDIC workshop
+my.strip5a.both <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg) {
+  levs <- c(expression(paste("Stoch Ord 1-sided")), expression(paste("Stoc Ord 2-sided")),
+    expression(paste(delta,"= 0.2 (Weibull)")), expression(paste(delta,"= 0.2 (identity)"))
+         ) #levels for your first factor (x1)
+  varnames<-c( expression("Similarity"))
+  strip.default(which.given, ..., factor.levels = levs, var.name=varnames,
+                strip.names = c(TRUE),strip.levels=c(T),
+                sep=expression(paste(": ")),
+                bg = bgColors[1],
+                par.strip.text = list(cex=.9)
+  )
+}
+
+
 ## Type I error rate (Fig 4) and Power (Fig 5)
 
 # Figure 4a and 5a (EQ measures)
@@ -77,17 +92,44 @@ my.strip6b <- function(which.given, ..., factor.levels,var.name,par.strip.text, 
   )
 }
 
+# Figure for MDIC workshop
+my.strip6aboth <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg) {
+  levs <- if (which.given == 1)  c(expression(paste("Keep ", D[1])), expression(paste("Discard ", D[1]))) #levels for your second factor (x2)
+  else c(expression(paste("SO 1-sided")), expression(paste("SO 2-sided")),
+    expression(paste(delta, " Weibull")), expression(paste(delta, " identity")) ) #levels for your first factor (x1)
+
+  varnames<-c(expression(""), expression("Similarity: "))
+  strip.default(which.given, ..., factor.levels = levs, var.name=varnames,
+                strip.names = c(TRUE),strip.levels=c(T),
+                sep=expression(paste("")),
+                bg = bgColors[which.given],
+                par.strip.text = list(cex=.9)
+  )
+}
+
+my.strip6aboth2 <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg) {
+  levs <-  c(expression(paste("SO 1-sided")), expression(paste("SO 2-sided")),
+         expression(paste(delta, "= 0.2 (Weibull)")), expression(paste(delta, "= 0.2 (identity)")) ) #levels for your first factor (x1)
+  
+  varnames<-c(expression("Similarity: "))
+  strip.default(which.given, ..., factor.levels = levs, var.name=varnames,
+                strip.names = c(TRUE),strip.levels=c(T),
+                sep=expression(paste("")),
+                bg = bgColors[which.given],
+                par.strip.text = list(cex=.9)
+  )
+}
 
 ## SD Comparison (Figure 7a and b)
 
 my.strip6aaa <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg) {
   levs <- if (which.given == 1)  c("no", "yes") #levels for your second factor (x2)
   else if (which.given == 2) c(expression(paste("SO 1-sided")), expression(paste("SO 2-sided")) ,
-                               expression(paste(delta," Weibull")), expression(paste(delta, "Identity")) ) #levels for your first factor (x1)
+                               expression(paste(delta," Weibull")), expression(paste(delta, " Identity")) ) #levels for your first factor (x1)
 
   text.size<-if(which.given==1) list(cex=.7) else if(which.given==2) list(cex=.7)
   
-  varnames<-c(expression(paste("Use ", D[1], "twice")), expression("Similarity"), expression(paste("Sample Size")) )
+  varnames<-c(expression(paste("Use ", D[1], " twice")), expression("Similarity"), expression(paste("Sample Size")) )
   strip.default(which.given, ..., factor.levels = levs, var.name=varnames,
                 strip.names = c(TRUE),strip.levels=c(T),
                 sep=expression(paste(": ")),
@@ -101,7 +143,7 @@ my.strip6aaa <- function(which.given, ..., factor.levels,var.name,par.strip.text
 my.strip9a <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg) {
   levs <- if (which.given == 1)  c(expression(paste("Keep ", D[1])), expression(paste("Discard ", D[1]))) #levels for your second factor (x2)
   else if (which.given == 2) c(expression(paste("SO 1-sided")), expression(paste("SO 2-sided")) ,
-                               expression(paste(delta," Weibull")), expression(paste(delta, "Identity")) ) #levels for your first factor (x1)
+                               expression(paste(delta," Weibull")), expression(paste(delta, " Identity")) ) #levels for your first factor (x1)
   text.size<-if(which.given==1) list(cex=.7) else if(which.given==2) list(cex=.7)
   
   varnames<-c(expression(""), expression("Similarity: "), 
