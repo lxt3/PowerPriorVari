@@ -23,21 +23,21 @@ np<-6
 nworkers<-np-1
 
 ### The configuration parameters
-n0=25
+n0=100
 n<-n0 
 
-external=F#T
+external=T#F#T
 
 OC<- "typeI" #"power" # "typeI"
-mus=c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1)  # type I and bias and alpha0
-#mus=c(-1,-.75,-.5, -.25, -.1)  # External
+#mus=c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1)  # type I and bias and alpha0
+mus=c(-1,-.75,-.5, -.25, -.1)  # External
 #mus=c(-.35, -.25, -.1,0) # power
 
 mu0<- 0
 power.null<- -0.5 # null for power simulations
 
-discfun<-  "equiv" #"wbord" #"wb" 
-two.sided<-F#T#F#T  # two-sided discount function
+discfun<-  "wbord" #"equiv" #"wbord" #"wb" 
+two.sided<-T#F#T  # two-sided discount function
 
 post.prob.only<-F#T#F # used with equivalence similarity measure
 delta<-.2 # used with equivalence similarity measure
@@ -92,13 +92,8 @@ if(discfun=="wbord" && OC=="power" ){
 
 if(discfun=="equiv" && OC=="typeI" ){
   Ponly<-ifelse(post.prob.only,"Ponly","")
-  if(two.sided){
-    fname.core<-paste0(path.to.files,"resultsEQ2sideDelta",Ponly,delta,"maxalpha",max_alpha,"n")
-    ws=.4; wsh=1.5; # if weibull_scale=99 that represents pvalue equals weight
-  } else{
     fname.core<-paste0(path.to.files,"resultsEQ1sideDelta",Ponly,delta,"maxalpha",max_alpha,"n")
     ws=.65; wsh=3; # if weibull_scale=99 that represents pvalue equals weight
-  }
 }
 
 if(discfun=="equiv" && OC=="power" ){
@@ -107,11 +102,9 @@ if(discfun=="equiv" && OC=="power" ){
     ws=.65; wsh=3; # if weibull_scale=99 that represents pvalue equals weight
 }
 
-# new for array job
-fname.core<-paste0(fname.core, sge)
 
 # sink file name
-sinkfname<-paste0(fname.core,n0,".txt")
+sinkfname<-paste0(fname.core,n0,sge,".txt")
 
 
 nsim<-15000/nworkers
@@ -122,9 +115,9 @@ percents=rev(c(.25,.5,.75,1))
 
 
 if(external==T) {
-  fname<-paste0(fname.core, n0, "Ext.RData") 
+  fname<-paste0(fname.core, n0, sge, "Ext.RData") 
 }else { 
-  fname<-paste0(fname.core, n0, ".RData")
+  fname<-paste0(fname.core, n0, sge, ".RData")
 }
 
 # source functions
@@ -145,7 +138,7 @@ results.SDF<-vector(length=dims) #
 
 
 if(is.null(sinkfname)){
-  sinkfname<-paste(fname.core,n0,".txt",sep="")
+  sinkfname<-paste(fname.core,n0, sge, ".txt",sep="")
 }
 
 
@@ -191,7 +184,7 @@ if(comm.rank()==0){
 
 #finalize(mpi.finalize = TRUE)
 
-
+if(comm.rank()==0){
 
  probF<-paste0("results.prob.dropF",".",discfun)
  probT<-paste0("results.prob.dropT",".",discfun)
@@ -213,7 +206,7 @@ if(comm.rank()==0){
 # 
  save(list=c(probT, probF, alpha, SDT, SDF, biasT, biasF),
       file=fname)
-
+}
 
 finalize(mpi.finalize = TRUE)
  
