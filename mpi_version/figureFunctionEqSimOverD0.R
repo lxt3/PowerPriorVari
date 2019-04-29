@@ -1,8 +1,9 @@
-loadAllIterations<-function(path.stem,discfun.stem,n.use,discfun,tag,envr=.GlobalEnv){
+loadAllIterations<-function(path.stem,discfun.stem,n.use,discfun,tag,external=FALSE,envr=.GlobalEnv){
   
   n.prior.sets<-1000
+  ext<-if(external) "Ext.RData" else ".RData"
   
-  fname1<-paste0(path.stem,discfun.stem,n.use,1,".RData") 
+  fname1<-paste0(path.stem,discfun.stem,n.use,1,ext) 
   load(fname1)
   
   
@@ -23,7 +24,7 @@ loadAllIterations<-function(path.stem,discfun.stem,n.use,discfun,tag,envr=.Globa
 
    for(i in 2:n.prior.sets) {
     
-    fnamei<-paste0(path.stem,discfun.stem,n.use,i,".RData") 
+    fnamei<-paste0(path.stem,discfun.stem,n.use,i,ext) 
     
     load(fnamei)
     
@@ -32,6 +33,8 @@ loadAllIterations<-function(path.stem,discfun.stem,n.use,discfun,tag,envr=.Globa
     results.prob.dropT<-accumResults(x=list(results.prob.dropT, results.prob.dropT.equiv))[[2]]
     results.biasF<-accumResults(x=list(results.biasF, results.biasF.equiv))[[2]]
     results.biasT<-accumResults(x=list(results.biasT, results.biasT.equiv))[[2]]
+    results.SDF<-accumResults(x=list(results.SDF, results.SDF.equiv))[[2]]
+    results.SDT<-accumResults(x=list(results.SDT, results.SDT.equiv))[[2]]
     
    }  # end for
    
@@ -53,7 +56,7 @@ loadAllIterations<-function(path.stem,discfun.stem,n.use,discfun,tag,envr=.Globa
     
     for(i in 2:n.prior.sets) {
       
-      fnamei<-paste0(path.stem,discfun.stem,n.use,i,".RData") 
+      fnamei<-paste0(path.stem,discfun.stem,n.use,i,ext) 
       
       load(fnamei)
       
@@ -62,6 +65,9 @@ loadAllIterations<-function(path.stem,discfun.stem,n.use,discfun,tag,envr=.Globa
       results.prob.dropT<-accumResults(x=list(results.prob.dropT, results.prob.dropT.wbord))[[2]]
       results.biasF<-accumResults(x=list(results.biasF, results.biasF.wbord))[[2]]
       results.biasT<-accumResults(x=list(results.biasT, results.biasT.wbord))[[2]]
+      results.SDF<-accumResults(x=list(results.SDF, results.SDF.wbord))[[2]]
+      results.SDT<-accumResults(x=list(results.SDT, results.SDT.wbord))[[2]]
+      
       
     }  # end for
     
@@ -92,54 +98,29 @@ loadAllIterations<-function(path.stem,discfun.stem,n.use,discfun,tag,envr=.Globa
 
 
 
-figureFunctionEqSimOverDo<-function(n.use, path.stem) {
+figureFunctionEqSimOverDo<-function(n.use, path.stem,external=FALSE) {
 
 # With Equivalence Similarity measure, we have EQ 1, 
-# as well as PP (posterior prob) 1-sided
+# as well as PP (posterior prob) 1-sided (EQ2)
   
   
 
 # Get EQ1 iterations
-loadAllIterations(path.stem,"resultsEQ1sideDelta0.2maxalpha1n",n.use,"equiv",tag="EQ1side")
+loadAllIterations(path.stem,"resultsEQ1sideDelta0.2maxalpha1n",n.use,"equiv",tag="EQ1side",external)
 
 
 # Get EQ2 iterations
-loadAllIterations(path.stem,"resultsEQ1sideDeltaPonly0.2maxalpha1n",n.use,"equiv",tag="EQ2side")
+loadAllIterations(path.stem,"resultsEQ1sideDeltaPonly0.2maxalpha1n",n.use,"equiv",tag="EQ2side",external)
   
   
 # Get SO 1-sided iterations
-loadAllIterations(path.stem, "resultsSOWeibull1siden",n.use,"wbord",tag="SO1side")
+loadAllIterations(path.stem, "resultsSOWeibull1siden",n.use,"wbord",tag="SO1side",external)
 
 
 # Get SO 2-sided iterations
-loadAllIterations(path.stem, "resultsSOWeibull2siden",n.use,"wbord",tag="SO2side")
+loadAllIterations(path.stem, "resultsSOWeibull2siden",n.use,"wbord",tag="SO2side",external)
 
-
-# gather the vectors for output
-# list(alpha=c(results.alpha.EQ2side, 
-#         results.alpha.EQ1side,
-#         results.alpha.SO1side,
-#         results.alpha.SO2side), 
-#      
-#      typeI=c(results.prob.dropF.EQ2side[1:20], results.prob.dropT.EQ2side[1:20],
-#      results.prob.dropF.EQ1side[1:20], results.prob.dropT.EQ1side[1:20],
-#      results.prob.dropF.SO1side[1:20],results.prob.dropT.SO1side[1:20],
-#      results.prob.dropF.SO2side[1:20], results.prob.dropT.SO2side[1:20]),
-#      
-#      bias=c(
-#        results.biasF.EQ2side, results.biasT.EQ2side,
-#        results.biasF.EQ1side, results.biasT.EQ1side,
-#        results.biasF.SO1side, results.biasT.SO1side,
-#        results.biasF.SO2side, results.biasT.SO2side
-#      ),
-#      
-#      sdF=c(
-#        results.SDF.EQ2side[1:20],
-#        results.SDF.EQ1side[1:20],
-#        results.SDF.SO1side[1:20],
-#        results.SDF.SO2side[1:20]
-#      )
-#      
-#      )
 
 }
+
+
