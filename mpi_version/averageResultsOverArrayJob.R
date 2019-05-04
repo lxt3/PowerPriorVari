@@ -276,7 +276,105 @@ trellis.par.set(layout.heights = list(axis.xlab.padding=1)) # default is 1
 
 
 
-#### Figure 5 Power uses a different figureFunction
+#### Figure 5 Power uses a different figureFunction (in progress)
+
+source('~/MDIC/simulations/figureFunctionPowerEqSimOverD0.R')
+
+# get results for each n
+figureFunctionPowerEqSimOverDo(n.use=25, path.stem)
+figureFunctionPowerEqSimOverDo(n.use=50, path.stem)
+figureFunctionPowerEqSimOverDo(n.use=100, path.stem)
+
+# extract power part
+
+raten25<-c(results.prob.dropF.EQ2side25, results.prob.dropT.EQ2side25,
+           results.prob.dropF.EQ1side25, results.prob.dropT.EQ1side25,
+           results.prob.dropF.SO1side25, results.prob.dropT.SO1side25,
+           results.prob.dropF.SO2side25, results.prob.dropT.SO2side25)
+
+raten50<-c(results.prob.dropF.EQ2side50, results.prob.dropT.EQ2side50,
+           results.prob.dropF.EQ1side50, results.prob.dropT.EQ1side50,
+           results.prob.dropF.SO1side50, results.prob.dropT.SO1side50,
+           results.prob.dropF.SO2side50, results.prob.dropT.SO2side50)
+
+raten100<-c(results.prob.dropF.EQ2side100, results.prob.dropT.EQ2side100,
+           results.prob.dropF.EQ1side100, results.prob.dropT.EQ1side100,
+           results.prob.dropF.SO1side100, results.prob.dropT.SO1side100,
+           results.prob.dropF.SO2side100, results.prob.dropT.SO2side100)
+
+
+# Make data frame
+sims<-data.frame(mu=rep(c(-.35,-.25,-.1, 0),4*8*3),         # 4
+                 percent=as.character(rep(rep(c(100,75,50,25),each=4), 8*3)),    # 4
+                 discard.D1=rep(rep(c("no", "yes"), each=16),4*3),    # 2
+                 similarity=rep(rep(c("cKS-2","bKS-1","aSO1","aSO2"),each=32),3),  # 4
+                 Size=rep(c("100","050","025"),each=128),             # 3
+                 rate=
+                   c( 
+                     raten100, raten50, raten25
+                   ))
+
+# We have not discarded 100% of the data, so set these to NA
+sims$rate[(sims$discard.D1=="yes" & sims$percent=="100")]<-NA
+
+
+# Figure 5a (EQ measures)
+
+source("stripFunctionsEqSim.R")
+require(lattice)
+
+trellis.par.set(layout.heights = list(axis.xlab.padding=0))#, # default is 1
+xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
+       subset=((sims$similarity=="cKS-2" | sims$similarity=="bKS-1") & ((sims$Size=="025") | (sims$Size=="100")) 
+       ),
+       layout=c(4,2),#as.table=TRUE,
+       key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
+                       columns=4, space="top",
+                       title="Percent of D used",cex.title=.85), 
+       xlab = expression(theta^"*"), ylab = "power", ylim=c(0,1.1), 
+       
+       scales=list(y=list(at=c(.2,.4,.6,.8,1)), 
+                   x=list(at=c(-.35,-.25,-.1, 0), labels=c(" -0.35","-0.25","-0.10", "0 ")), cex=.7,
+                   tck=c(1,0),relation="same",alternating=c(1,1)), 
+       strip=my.strip6a,
+       panel = function(x, y,groups,subscripts) {
+         panel.grid(h = 0, v = 0)
+         panel.xyplot(x, y, pch=20,col=1:4,subscripts = subscripts,groups=groups)
+         panel.superpose(x,y,subscripts = subscripts,groups=groups,col=1:4, 
+                         panel.groups=panel.xyplot, type="l")#loess,
+       }#,
+)
+trellis.par.set(layout.heights = list(axis.xlab.padding=1, axis.panel=1)) # default is 1,1
+
+# Figure 5b (SO measures)
+
+source("stripFunctionsEqSim.R")
+require(lattice)
+
+trellis.par.set(layout.heights = list(axis.xlab.padding=0, axis.panel=0)) # default is 1,1
+xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
+       subset=((sims$similarity=="aSO2" | sims$similarity=="aSO1") & ((sims$Size=="025") | (sims$Size=="100")) 
+       ),
+       layout=c(4,2),#as.table=TRUE,
+       key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
+                       columns=4, space="top",
+                       title="Percent of D used",cex.title=.85), 
+       xlab = expression(theta^"*"), ylab = "power",
+       
+       scales=list(y=list(at=c(0,.2,.4,.6,.8,1)),#tick.number=6), 
+                   x=list(at=c(-.35,-.25,-.1, 0), labels=c(" -0.35","-0.25","-0.10", "0 ")), cex=.7,
+                   tck=c(1,0),relation="same",alternating=c(1,1)), 
+       strip=my.strip6b,
+       panel = function(x, y,groups,subscripts) {
+         panel.grid(h = 0, v = 0)
+         panel.xyplot(x, y, pch=20,subscripts = subscripts,groups=groups, col=1:4)
+         panel.superpose(x,y,subscripts = subscripts,groups=groups,col=1:4, 
+                         panel.groups=panel.xyplot, type="l")#loess,
+       }#,
+)
+trellis.par.set(layout.heights = list(axis.xlab.padding=1, axis.panel=1)) # default is 1,1
+
+
 
 
 #### Figure 7 SD comparison 
