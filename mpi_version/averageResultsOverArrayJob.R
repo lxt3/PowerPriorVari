@@ -44,12 +44,17 @@ sims<-data.frame(mu=rep(c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1),4*4*3),
 library(lattice)
 source("stripFunctionsEqSim.R")
 
+
 trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
 
 xyplot(rate~mu|Size*similarity,data=sims,groups=percent,subscripts = TRUE,
-       subset=(sims$similarity=="cKS-2" | sims$similarity=="bKS-1"),
-       layout=c(3,2),#as.table=TRUE,
-       key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
+       #subset=(sims$similarity=="cKS-2" | sims$similarity=="bKS-1"),  # old figure 3a with Weibull and identity disc fcn
+       subset=(sims$similarity=="bKS-1"),
+       
+       #layout=c(3,2),#as.table=TRUE,  # old figure 3a with Weibull and identity disc fcn
+       layout=c(3,1),#as.table=TRUE,
+       
+       key = simpleKey(c("100%", "75%", "50%", "25%"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
                        title="Percent of D used",cex.title=.85), 
        xlab = expression(paste(theta^"*")), 
@@ -59,6 +64,7 @@ xyplot(rate~mu|Size*similarity,data=sims,groups=percent,subscripts = TRUE,
                    #x=list(at=c(-1,-.75,-.5, -.25, 0, .25,.5,.75,1)),
                    x=list(at=c(-1,-.5,  0, .5,1)),
                    tck=c(1,0),relation="same",alternating=c(1,1)), 
+       
        strip=my.strip5a,
        panel = function(x, y,subscripts=subscripts,groups) {
          panel.xyplot(x, y,pch=20,col=1:4,groups=groups,subscripts=subscripts)
@@ -78,7 +84,7 @@ trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
 xyplot(rate~mu|Size*similarity,data=sims,groups=percent,subscripts = TRUE,
        subset=(sims$similarity=="aSO1" | sims$similarity=="aSO2"),
        layout=c(3,2),#as.table=TRUE,
-       key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
+       key = simpleKey(c("100%", "75%", "50%", "25%"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
                        title="Percent of D used",cex.title=.85), 
        xlab = expression(paste(theta^"*")), 
@@ -140,17 +146,21 @@ source("stripFunctionsEqSim.R")
 
 trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
 xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
-       subset=((sims$similarity=="cKS-2" | sims$similarity=="bKS-1") & 
-                 ((sims$Size=="025") | (sims$Size=="100")) 
-       ),
-       layout=c(4,2),
-       key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
+#       subset=((sims$similarity=="cKS-2" | sims$similarity=="bKS-1") & 
+#                 ((sims$Size=="025") | (sims$Size=="100"))   # used for plotting both identity and Weibull disc fcns
+       subset=((sims$similarity=="bKS-1") & 
+                    ((sims$Size=="025") | (sims$Size=="100")) 
+               ),
+       #layout=c(4,2),
+       layout=c(2,2),
+       
+       key = simpleKey(c("100%", "75%", "50%", "25%"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
                        title="Percent of D used",cex.title=.85), 
        xlab = expression(paste(theta^"*")), 
        ylab = "type I error rate",
        
-       scales=list(y=list(limits=c(0.0,.25), at=seq(0.0,.25,by=0.05)), 
+       scales=list(y=list(limits=c(0.0,.15), at=seq(0.0,.15,by=0.05)), 
                    x=list(at=c(-1,-.75,-.5, -.25,-0.1), 
                           labels=c("   -1.0","-0.75","-0.50 ","-0.25  ","-0.1")),
                    tck=c(1,0),relation="same",alternating=c(1,1), cex=0.7), 
@@ -172,13 +182,13 @@ trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
 xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
        subset=((sims$similarity=="aSO2" | sims$similarity=="aSO1") & ((sims$Size=="025") | (sims$Size=="100"))),
        layout=c(4,2),#as.table=TRUE,
-       key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
+       key = simpleKey(c("100%", "75%", "50%", "25%"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
                        title="Percent of D used",cex.title=.85), 
        xlab = expression(paste(theta^"*")), 
        ylab = "type I error rate",
        
-       scales=list(y=list(limits=c(0.0,.25), at=seq(0.0,.25,by=0.05)), 
+       scales=list(y=list(limits=c(0.0,.15), at=seq(0.0,.15,by=0.05)), 
                    x=list(at=c(-1,-.75,-.5, -.25,-.1), 
                           labels=c("   -1.0","-0.75","-0.50 ","-0.25   ","-0.1")),
                    tck=c(1,0),relation="same",alternating=c(1,1),cex=.7), 
@@ -227,9 +237,101 @@ require(lattice)
 
 trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
 xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
+#       subset= sims$Size=="100",
+       subset= sims$Size=="100" & (sims$similarity=="aSO2" | sims$similarity=="aSO1" | sims$similarity=="bKS-1"),  # no identity for delta measure
+       
+#       layout=c(4,2),#as.table=TRUE,  
+       layout=c(2,3),#as.table=TRUE,  # no identity for delta measure
+
+       key = simpleKey(c("100%", "75%", "50%", "25%"), col=c(1,4,3,2),points=F,border=T,
+                       columns=4, space="top",
+                       title="Percent of D used",cex.title=.85), 
+       xlab = expression(theta^"*"), ylab = expression(paste("Bias of ", theta^"*")),
+       
+       scales=list(y=list(tick.number=6), x=list(at=c(-1,-.5,0,.5,1), 
+                                                 labels=c(" -1.0","-0.5","0", "0.5","1.0 ")), 
+                   cex=.7, tck=c(1,0), relation="same",alternating=c(1,1)), 
+       strip=my.strip9a,
+       drop.unused.levels = TRUE,
+       panel = function(x, y,groups,subscripts) {
+         panel.grid(h = 0, v = 0)
+         panel.xyplot(x, y, pch=20,subscripts = subscripts,groups=groups,col=1:4)
+         panel.superpose(x,y,subscripts = subscripts,groups=groups,col=1:4, 
+                         panel.groups=panel.xyplot, type="l")#loess,
+       }#,
+)
+trellis.par.set(layout.heights = list(axis.xlab.padding=1)) # default is 1
+
+
+##n=25
+source("stripFunctionsEqSim.R")
+require(lattice)
+
+trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
+xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
+       #subset= sims$Size=="025",
+       subset= sims$Size=="025" & (sims$similarity=="aSO2" | sims$similarity=="aSO1" | sims$similarity=="bKS-1"),  # no identity for delta measure
+       
+       #layout=c(4,2),
+       layout=c(2,3),
+       
+       key = simpleKey(c("100%", "75%", "50%", "25%"), col=c(1,4,3,2),points=F,border=T,
+                       columns=4, space="top",
+                       title="Percent of D used",cex.title=.85), 
+       xlab = expression(theta^"*"), ylab = expression(paste("Bias of ", theta^"*")),
+       
+       scales=list(y=list(tick.number=6), x=list(at=c(-1,-.5,0,.5,1), 
+                                                 labels=c(" -1.0","-0.5","0", "0.5","1.0 ")), 
+                   cex=.7, tck=c(1,0), relation="same",alternating=c(1,1)), 
+       strip=my.strip9a,
+       panel = function(x, y,groups,subscripts) {
+         panel.grid(h = 0, v = 0)
+         panel.xyplot(x, y, pch=20,subscripts = subscripts,groups=groups,col=1:4)
+         panel.superpose(x,y,subscripts = subscripts,groups=groups,col=1:4, 
+                         panel.groups=panel.xyplot, type="l")
+       }#,
+)
+trellis.par.set(layout.heights = list(axis.xlab.padding=1)) # default is 1
+
+
+#### Figure 6 - alternative (MSE) not used in paper
+
+# get results for MSE
+raten25<-c(results.biasF.EQ2side25^2 + results.SDF.EQ2side25^2, results.biasT.EQ2side25^2 + results.SDT.EQ2side25^2,
+           results.biasF.EQ1side25^2 + results.SDF.EQ1side25^2, results.biasT.EQ1side25^2 + results.SDT.EQ1side25^2,
+           results.biasF.SO1side25^2 + results.SDF.SO1side25^2, results.biasT.SO1side25^2 + results.SDT.SO1side25^2,
+           results.biasF.SO2side25^2 + results.SDF.SO2side25^2, results.biasT.SO2side25^2 + results.SDT.SO2side25^2)
+raten50<-c(results.biasF.EQ2side50^2 + results.SDF.EQ2side50^2, results.biasT.EQ2side50^2 + results.SDT.EQ2side50^2,
+           results.biasF.EQ1side50^2 + results.SDF.EQ1side50^2, results.biasT.EQ1side50^2 + results.SDT.EQ1side50^2,
+           results.biasF.SO1side50^2 + results.SDF.SO1side50^2, results.biasT.SO1side50^2 + results.SDT.SO1side50^2,
+           results.biasF.SO2side50^2 + results.SDF.SO2side50^2, results.biasT.SO2side50^2 + results.SDT.SO2side50^2)
+
+raten100<-c(results.biasF.EQ2side100^2 + results.SDF.EQ2side100^2, results.biasT.EQ2side100^2 + results.SDT.EQ2side100^2,
+           results.biasF.EQ1side100^2 + results.SDF.EQ1side100^2, results.biasT.EQ1side100^2 + results.SDT.EQ1side100^2,
+           results.biasF.SO1side100^2 + results.SDF.SO1side100^2, results.biasT.SO1side100^2 + results.SDT.SO1side100^2,
+           results.biasF.SO2side100^2 + results.SDF.SO2side100^2, results.biasT.SO2side100^2 + results.SDT.SO2side100^2)
+
+# make the data frame
+sims<-data.frame(mu=rep(c(-1,-.75,-.5,-.25,-.1,0,.1,.25,.5,.75,1),4*16),         # 4
+                 percent=as.character(rep(rep(c(100,75,50,25), each=11),16)),    # 4
+                 discard.D1=rep(rep(c("no", "yes"), each=44),8),    # 2
+                 similarity=rep(rep(c("cKS-2","bKS-1","aSO1","aSO2"),each=88),2),  # 4
+                 Size=rep(c("100","025"),each=352),             # 3
+                 rate=
+                   c( 
+                     raten100, raten25
+                   ))
+
+
+##n=100
+source("stripFunctionsEqSim.R")
+require(lattice)
+
+trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
+xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
        subset= sims$Size=="100",
        layout=c(4,2),#as.table=TRUE,
-       key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
+       key = simpleKey(c("100%", "75%", "50%", "25%"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
                        title="Percent of D used",cex.title=.85), 
        xlab = expression(theta^"*"), ylab = expression(paste("Bias of ", theta^"*")),
@@ -256,7 +358,7 @@ trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
 xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
        subset= sims$Size=="025",
        layout=c(4,2),
-       key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
+       key = simpleKey(c("100%", "75%", "50%", "25%"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
                        title="Percent of D used",cex.title=.85), 
        xlab = expression(theta^"*"), ylab = expression(paste("Bias of ", theta^"*")),
@@ -325,10 +427,12 @@ require(lattice)
 
 trellis.par.set(layout.heights = list(axis.xlab.padding=0))#, # default is 1
 xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
-       subset=((sims$similarity=="cKS-2" | sims$similarity=="bKS-1") & ((sims$Size=="025") | (sims$Size=="100")) 
-       ),
-       layout=c(4,2),#as.table=TRUE,
-       key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
+#       subset=((sims$similarity=="cKS-2" | sims$similarity=="bKS-1") & ((sims$Size=="025") | (sims$Size=="100"))),
+       subset=((sims$similarity=="bKS-1") & ((sims$Size=="025") | (sims$Size=="100"))),
+#       layout=c(4,2),#as.table=TRUE,
+       layout=c(2,2),#as.table=TRUE,
+
+       key = simpleKey(c("100%", "75%", "50%", "25%"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
                        title="Percent of D used",cex.title=.85), 
        xlab = expression(theta^"*"), ylab = "power", ylim=c(0,1.1), 
@@ -356,7 +460,7 @@ xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = 
        subset=((sims$similarity=="aSO2" | sims$similarity=="aSO1") & ((sims$Size=="025") | (sims$Size=="100")) 
        ),
        layout=c(4,2),#as.table=TRUE,
-       key = simpleKey(c("100", "75", "50", "25"), col=c(1,4,3,2),points=F,border=T,
+       key = simpleKey(c("100%", "75%", "50%", "25%"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
                        title="Percent of D used",cex.title=.85), 
        xlab = expression(theta^"*"), ylab = "power",
@@ -378,6 +482,11 @@ trellis.par.set(layout.heights = list(axis.xlab.padding=1, axis.panel=1)) # defa
 
 
 #### Figure 7 SD comparison 
+
+# get results for each n
+figureFunctionEqSimOverDo(n.use=25, path.stem)
+figureFunctionEqSimOverDo(n.use=50, path.stem)
+figureFunctionEqSimOverDo(n.use=100, path.stem)
 
 
 # get results for sdF from internal data
@@ -417,6 +526,7 @@ sims<-data.frame(mu=rep(c(-1,-.75,-.5,-.25,-.1),4*8*2),         # 4
                      raten100,raten100Ext,
                      raten25,raten25Ext
                    ))
+## Figures ###
 
 ## n=100
 source("stripFunctionsEqSim.R")
@@ -472,8 +582,25 @@ xyplot(rate~mu|twice.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
 trellis.par.set(layout.heights = list(axis.xlab.padding=1, axis.panel=1)) # default is 1,1
 
 
+#### Table ####
 
-#####################3 older
+sd.summarize.yes<-sims[sims$twice.D1=="yes",]
+sd.summarize.no<-sims[sims$twice.D1=="no",]
+
+
+stem<-sd.summarize.no[,c(1:2,4:5)]
+stem$ratio<-txtRound(sd.summarize.no$rate/sd.summarize.yes$rate,digits = 4)
+
+res<-reshape(stem, idvar=c("Size","similarity","mu"),direction = "wide",timevar = c("percent"), v.names = "ratio")
+levels(res$similarity)<-c("Stoc Order 1-sided", "Stoc Order 2-sided","Delta Sim Weibull", "Delta Sim Ident") 
+
+
+res.tab<-htmlTable(res, rnames=FALSE, 
+                   header=c("mu", "Similarity Measure", "Sample Size", "100%", "75%", "50%", "25%"))
+
+
+
+#####################3 older (not used)
 
 fname.reg.EQ1<-paste(path.stem,"resultsEQ1sideDelta0.2maxalpha1n",n.use,1,".RData", sep="") # EQ 1-sided
 fname.reg.EQ1<-paste(path.stem,"resultsEQ1sideDeltaPonly0.2maxalpha1n",n.use,1,".RData", sep="") # EQ 1-sided
