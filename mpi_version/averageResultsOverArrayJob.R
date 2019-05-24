@@ -594,7 +594,7 @@ stem$ratio<-txtRound(sd.summarize.no$rate/sd.summarize.yes$rate,digits = 4)
 res<-reshape(stem, idvar=c("Size","similarity","mu"),direction = "wide",timevar = c("percent"), v.names = "ratio")
 levels(res$similarity)<-c("Stoc Order 1-sided", "Stoc Order 2-sided","Delta Sim Weibull", "Delta Sim Ident") 
 
-
+library(htmlTable)
 res.tab<-htmlTable(res, rnames=FALSE, 
                    header=c("mu", "Similarity Measure", "Sample Size", "100%", "75%", "50%", "25%"))
 
