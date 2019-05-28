@@ -29,7 +29,7 @@ raten25<-c(results.alpha.EQ2side25, results.alpha.EQ1side25, results.alpha.SO1si
 # create the whole data frame (note that this is a different structure than for the fixed D0 simulations)
 sims<-data.frame(mu=rep(c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1),4*4*3),
                  percent=as.character(rep(rep(c(100,75,50,25), each=11),4*3)),
-                 similarity=rep(rep(c("cKS-2","bKS-1","aSO1","aSO2"),each=11*4),3),
+                 similarity=rep(rep(c("cKS-2","AbKS-1","BaSO1","CaSO2"),each=11*4),3),
                  Size=rep(c("100","050","025"),each=11*4*4),
                  
                  rate=
@@ -39,20 +39,21 @@ sims<-data.frame(mu=rep(c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1),4*4*3),
 
 ## all else same as for fixed D0
 
-# Figure 3a (EQ measures)
+# Figure 3 
 
 library(lattice)
 source("stripFunctionsEqSim.R")
 
-
+require(latticeExtra)
 trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
 
-xyplot(rate~mu|Size*similarity,data=sims,groups=percent,subscripts = TRUE,
+useOuterStrips(
+xyplot(rate~mu|similarity*Size,data=sims,groups=percent,subscripts = TRUE,
        #subset=(sims$similarity=="cKS-2" | sims$similarity=="bKS-1"),  # old figure 3a with Weibull and identity disc fcn
-       subset=(sims$similarity=="bKS-1"),
+       subset=((sims$similarity=="AbKS-1") | (sims$similarity=="BaSO1" | sims$similarity=="CaSO2")),
        
-       #layout=c(3,2),#as.table=TRUE,  # old figure 3a with Weibull and identity disc fcn
-       layout=c(3,1),#as.table=TRUE,
+       #layout=c(3,2),     # old figure 3a with Weibull and identity disc fcn
+       layout=c(3,3),as.table=TRUE,
        
        key = simpleKey(c("100%", "75%", "50%", "25%"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
@@ -65,17 +66,21 @@ xyplot(rate~mu|Size*similarity,data=sims,groups=percent,subscripts = TRUE,
                    x=list(at=c(-1,-.5,  0, .5,1)),
                    tck=c(1,0),relation="same",alternating=c(1,1)), 
        
-       strip=my.strip5a,
        panel = function(x, y,subscripts=subscripts,groups) {
          panel.xyplot(x, y,pch=20,col=1:4,groups=groups,subscripts=subscripts)
          panel.superpose(x,y,subscripts=subscripts,groups=groups,col=1:4, 
                          panel.groups=panel.xyplot, type="l")#loess,
        }
+),
+
+  strip=my.strip5a.top,
+  strip.left=my.strip5a.left
+
 )
 trellis.par.set(layout.heights = list(axis.xlab.padding=1)) # default is 1
 
 
-# Figure 3b (Stochastic ordering measures)
+# Old Figure 3b (Stochastic ordering measures) Now subsumed within Figure 3
 
 library(lattice)
 source("stripFunctionsEqSim.R")
@@ -144,8 +149,12 @@ sims$rate[(sims$discard.D1=="yes" & sims$percent=="100")]<-NA
 library(lattice)
 source("stripFunctionsEqSim.R")
 
+library(latticeExtra)
+
 trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
-xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
+useOuterStrips(
+#  xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
+  xyplot(rate~mu|discard.D1*Size,data=sims,groups=percent,subscripts = TRUE,
 #       subset=((sims$similarity=="cKS-2" | sims$similarity=="bKS-1") & 
 #                 ((sims$Size=="025") | (sims$Size=="100"))   # used for plotting both identity and Weibull disc fcns
        subset=((sims$similarity=="bKS-1") & 
@@ -156,7 +165,7 @@ xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = 
        
        key = simpleKey(c("100%", "75%", "50%", "25%"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
-                       title="Percent of D used",cex.title=.85), 
+                       title="Percent of D used",cex.title=.9), 
        xlab = expression(paste(theta^"*")), 
        ylab = "type I error rate",
        
@@ -164,42 +173,78 @@ xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = 
                    x=list(at=c(-1,-.75,-.5, -.25,-0.1), 
                           labels=c("   -1.0","-0.75","-0.50 ","-0.25  ","-0.1")),
                    tck=c(1,0),relation="same",alternating=c(1,1), cex=0.7), 
-       strip=my.strip6a,
+#       strip=my.strip6a, # uncomment with 3 conditioning without useOuterStrips
        panel = function(x, y,subscripts=subscripts,groups) {
          panel.xyplot(x, y,pch=20,subscripts=subscripts,groups=groups,col=1:4)
          panel.superpose(x,y,subscripts=subscripts,groups=groups,col=1:4, 
                          panel.groups=panel.xyplot, type="l")
-       }
+       },
+      par.settings=list(layout.heights = list(axis.xlab.padding=0), drop.unused.levels=list(cond=TRUE, data=TRUE))
+),
+        strip=my.strip6a.top,
+        strip.left=my.strip6a.left
+
 )
 trellis.par.set(layout.heights = list(axis.xlab.padding=1)) # default is 1
+
+
 
 # Figure 4b (SO measures)
 
 require(lattice)
 source("stripFunctionsEqSim.R")
 
-trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
-xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
-       subset=((sims$similarity=="aSO2" | sims$similarity=="aSO1") & ((sims$Size=="025") | (sims$Size=="100"))),
-       layout=c(4,2),#as.table=TRUE,
-       key = simpleKey(c("100%", "75%", "50%", "25%"), col=c(1,4,3,2),points=F,border=T,
+n100<-xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
+              subset=((sims$similarity=="aSO2" | sims$similarity=="aSO1") &  (sims$Size=="100")),
+              layout=c(4,1),
+              
+         key = simpleKey(c("100%", "75%", "50%", "25%"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
                        title="Percent of D used",cex.title=.85), 
-       xlab = expression(paste(theta^"*")), 
-       ylab = "type I error rate",
-       
-       scales=list(y=list(limits=c(0.0,.15), at=seq(0.0,.15,by=0.05)), 
+         xlab = expression(paste(theta^"*")), 
+         ylab = "type I error rate",
+         sub= expression(paste("n = ", n[0]," = 100")),
+         scales=list(y=list(limits=c(0.0,.15), at=seq(0.0,.15,by=0.05)), 
                    x=list(at=c(-1,-.75,-.5, -.25,-.1), 
                           labels=c("   -1.0","-0.75","-0.50 ","-0.25   ","-0.1")),
                    tck=c(1,0),relation="same",alternating=c(1,1),cex=.7), 
-       strip=my.strip6b,
        panel = function(x, y,subscripts=subscripts,groups) {
          panel.xyplot(x, y,pch=20,subscripts=subscripts,groups=groups,col=1:4)
          panel.superpose(x,y,subscripts=subscripts,groups=groups,col=1:4, 
                          panel.groups=panel.xyplot, type="l")#loess,
-       }
+       },
+       
+       strip=my.strip6b,
+
+       par.settings=list(layout.heights = list(axis.xlab.padding=0), drop.unused.levels=list(cond=TRUE, data=TRUE))
+     
+     )
+
+
+n25<-xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
+             subset=((sims$similarity=="aSO2" | sims$similarity=="aSO1") & (sims$Size=="025") ),
+             layout=c(4,1),
+             xlab = expression(paste(theta^"*")), 
+             ylab = "type I error rate",
+             sub= expression(paste("n = ", n[0]," = 25")),
+             scales=list(y=list(limits=c(0.0,.15), at=seq(0.0,.15,by=0.05)), 
+                         x=list(at=c(-1,-.75,-.5, -.25,-.1), 
+                                labels=c("   -1.0","-0.75","-0.50 ","-0.25   ","-0.1")),
+                         tck=c(1,0),relation="same",alternating=c(1,1),cex=.7), 
+             strip=my.strip6b,
+             panel = function(x, y,subscripts=subscripts,groups) {
+               panel.xyplot(x, y,pch=20,subscripts=subscripts,groups=groups,col=1:4)
+               panel.superpose(x,y,subscripts=subscripts,groups=groups,col=1:4, 
+                               panel.groups=panel.xyplot, type="l")#loess,
+             },
+             par.settings=list(layout.heights = list(axis.xlab.padding=0), drop.unused.levels=list(cond=TRUE, data=TRUE))
+             
 )
-trellis.par.set(layout.heights = list(axis.xlab.padding=1)) # default is 1
+
+# put them on the viewer
+plot(n100,split=c(1,1,1,2), position = c(0,-.1,1.0,1.0), more = TRUE)#panel.height = list(x=1.5, units="null"))
+plot(n25,split=c(1,2,1,2))
+
 
 
 
