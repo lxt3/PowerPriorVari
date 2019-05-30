@@ -248,7 +248,7 @@ my.strip9a.top <- function(which.given, ..., factor.levels,var.name,par.strip.te
 }
 
 my.strip9a.left <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg) {
-  levs <-  c(expression(paste("Keep ", D[1])), expression(paste("Discard ", D[1]))) #levels for your second factor (x2)
+  levs <-  c(expression(paste("Discard ", D[1])), expression(paste("Keep ", D[1]))) #levels for your second factor (x2)
 
     text.size<-list(cex=.7) 
   

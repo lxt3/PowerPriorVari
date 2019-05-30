@@ -268,8 +268,8 @@ raten100<-c(results.biasF.EQ2side100, results.biasT.EQ2side100,
 # make the data frame
 sims<-data.frame(mu=rep(c(-1,-.75,-.5,-.25,-.1,0,.1,.25,.5,.75,1),4*16),         # 4
                  percent=as.character(rep(rep(c(100,75,50,25), each=11),16)),    # 4
-                 discard.D1=rep(rep(c("no", "yes"), each=44),8),    # 2
-                 similarity=rep(rep(c("cKS-2","bKS-1","aSO1","aSO2"),each=88),2),  # 4
+                 discard.D1=rep(rep(c("no", "Ayes"), each=44),8),    # 2
+                 similarity=rep(rep(c("cKS-2","AbKS-1","aSO1","aSO2"),each=88),2),  # 4
                  Size=rep(c("100","025"),each=352),             # 3
                  rate=
                    c( 
@@ -285,7 +285,7 @@ require(latticeExtra)
 useOuterStrips(
 xyplot(rate~mu|similarity*discard.D1,data=sims,groups=percent,subscripts = TRUE,
 #       subset= sims$Size=="100",
-       subset= sims$Size=="100" & (sims$similarity=="aSO2" | sims$similarity=="aSO1" | sims$similarity=="bKS-1"),  # no identity for delta measure
+       subset= sims$Size=="100" & (sims$similarity=="aSO2" | sims$similarity=="aSO1" | sims$similarity=="AbKS-1"),  # no identity for delta measure
        
 #       layout=c(4,2),#as.table=TRUE,  
        layout=c(3,2),#as.table=TRUE,  # no identity for delta measure
@@ -323,7 +323,7 @@ require(latticeExtra)
 useOuterStrips(
   xyplot(rate~mu|similarity*discard.D1,data=sims,groups=percent,subscripts = TRUE,
          #       subset= sims$Size=="025",
-         subset= sims$Size=="025" & (sims$similarity=="aSO2" | sims$similarity=="aSO1" | sims$similarity=="bKS-1"),  # no identity for delta measure
+         subset= sims$Size=="025" & (sims$similarity=="aSO2" | sims$similarity=="aSO1" | sims$similarity=="AbKS-1"),  # no identity for delta measure
          
          #       layout=c(4,2),#as.table=TRUE,  
          layout=c(3,2),#as.table=TRUE,  # no identity for delta measure
