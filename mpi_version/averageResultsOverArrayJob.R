@@ -423,7 +423,7 @@ trellis.par.set(layout.heights = list(axis.xlab.padding=1)) # default is 1
 
 
 
-#### Figure 5 Power uses a different figureFunction (in progress)
+#### Figure 5 Power uses a different figureFunction 
 
 source('~/MDIC/simulations/figureFunctionPowerEqSimOverD0.R')
 
@@ -470,11 +470,16 @@ sims$rate[(sims$discard.D1=="yes" & sims$percent=="100")]<-NA
 source("stripFunctionsEqSim.R")
 require(lattice)
 
+require(latticeExtra)
+
 trellis.par.set(layout.heights = list(axis.xlab.padding=0))#, # default is 1
-xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
-#       subset=((sims$similarity=="cKS-2" | sims$similarity=="bKS-1") & ((sims$Size=="025") | (sims$Size=="100"))),
+
+useOuterStrips(
+#xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
+xyplot(rate~mu|discard.D1*Size,data=sims,groups=percent,subscripts = TRUE,
+#       subset=((sims$similarity=="cKS-2" | sims$similarity=="bKS-1") & ((sims$Size=="025") | (sims$Size=="100"))), # used for plotting both identity and Weibull disc fcns
        subset=((sims$similarity=="bKS-1") & ((sims$Size=="025") | (sims$Size=="100"))),
-#       layout=c(4,2),#as.table=TRUE,
+#       layout=c(4,2),
        layout=c(2,2),#as.table=TRUE,
 
        key = simpleKey(c("100%", "75%", "50%", "25%"), col=c(1,4,3,2),points=F,border=T,
@@ -485,30 +490,36 @@ xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = 
        scales=list(y=list(at=c(.2,.4,.6,.8,1)), 
                    x=list(at=c(-.35,-.25,-.1, 0), labels=c(" -0.35","-0.25","-0.10", "0 ")), cex=.7,
                    tck=c(1,0),relation="same",alternating=c(1,1)), 
-       strip=my.strip6a,
+      # strip=my.strip6a, # use with 3 conditioning factors, and no outerstrips
        panel = function(x, y,groups,subscripts) {
          panel.grid(h = 0, v = 0)
          panel.xyplot(x, y, pch=20,col=1:4,subscripts = subscripts,groups=groups)
          panel.superpose(x,y,subscripts = subscripts,groups=groups,col=1:4, 
                          panel.groups=panel.xyplot, type="l")#loess,
        }#,
+),
+  strip=my.strip6a.top,
+  strip.left=my.strip6a.left
 )
+
 trellis.par.set(layout.heights = list(axis.xlab.padding=1, axis.panel=1)) # default is 1,1
+
+
 
 # Figure 5b (SO measures)
 
 source("stripFunctionsEqSim.R")
 require(lattice)
 
-trellis.par.set(layout.heights = list(axis.xlab.padding=0, axis.panel=0)) # default is 1,1
-xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
-       subset=((sims$similarity=="aSO2" | sims$similarity=="aSO1") & ((sims$Size=="025") | (sims$Size=="100")) 
-       ),
-       layout=c(4,2),#as.table=TRUE,
+n100<-xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
+       subset=((sims$similarity=="aSO2" | sims$similarity=="aSO1") &  (sims$Size=="100")),
+       layout=c(4,1),
+       
        key = simpleKey(c("100%", "75%", "50%", "25%"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
                        title="Percent of D used",cex.title=.85), 
        xlab = expression(theta^"*"), ylab = "power",
+       sub= expression(paste("n = ", n[0]," = 100")),
        
        scales=list(y=list(at=c(0,.2,.4,.6,.8,1)),#tick.number=6), 
                    x=list(at=c(-.35,-.25,-.1, 0), labels=c(" -0.35","-0.25","-0.10", "0 ")), cex=.7,
@@ -518,11 +529,38 @@ xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = 
          panel.grid(h = 0, v = 0)
          panel.xyplot(x, y, pch=20,subscripts = subscripts,groups=groups, col=1:4)
          panel.superpose(x,y,subscripts = subscripts,groups=groups,col=1:4, 
-                         panel.groups=panel.xyplot, type="l")#loess,
-       }#,
+                         panel.groups=panel.xyplot, type="l")
+       },
+       
+       par.settings=list(layout.heights = list(axis.xlab.padding=0), drop.unused.levels=list(cond=TRUE, data=TRUE))
+       
 )
-trellis.par.set(layout.heights = list(axis.xlab.padding=1, axis.panel=1)) # default is 1,1
 
+n25<-xyplot(rate~mu|discard.D1*similarity*Size,data=sims,groups=percent,subscripts = TRUE,
+             subset=((sims$similarity=="aSO2" | sims$similarity=="aSO1") &  (sims$Size=="025")),
+             layout=c(4,1),
+             
+             xlab = expression(theta^"*"), ylab = "power",
+             sub= expression(paste("n = ", n[0]," = 25")),
+             
+             scales=list(y=list(at=c(0,.2,.4,.6,.8,1)), 
+                         x=list(at=c(-.35,-.25,-.1, 0), labels=c(" -0.35","-0.25","-0.10", "0 ")), cex=.7,
+                         tck=c(1,0),relation="same",alternating=c(1,1)), 
+             strip=my.strip6b,
+             panel = function(x, y,groups,subscripts) {
+               panel.grid(h = 0, v = 0)
+               panel.xyplot(x, y, pch=20,subscripts = subscripts,groups=groups, col=1:4)
+               panel.superpose(x,y,subscripts = subscripts,groups=groups,col=1:4, 
+                               panel.groups=panel.xyplot, type="l")
+             },
+             
+             par.settings=list(layout.heights = list(axis.xlab.padding=0), drop.unused.levels=list(cond=TRUE, data=TRUE))
+             
+)
+
+# put them on the viewer
+plot(n100,split=c(1,1,1,2), position = c(0,-.1,1.0,1.025), more = TRUE)#panel.height = list(x=1.5, units="null"))
+plot(n25,split=c(1,2,1,2))
 
 
 
