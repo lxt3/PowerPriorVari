@@ -212,6 +212,7 @@ my.strip6aaa <- function(which.given, ..., factor.levels,var.name,par.strip.text
 
 ## Bias (Figure 6a and b)
 
+# for stacked strips
 my.strip9a <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg) {
   levs <- if (which.given == 1)  c(expression(paste("Keep ", D[1])), expression(paste("Discard ", D[1]))) #levels for your second factor (x2)
   else if (which.given == 2) c(expression(paste("SO 1-sided")), expression(paste("SO 2-sided")) ,
@@ -228,6 +229,38 @@ my.strip9a <- function(which.given, ..., factor.levels,var.name,par.strip.text,b
   )
 }
 
+# for outer strips
+
+my.strip9a.top <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg) {
+  levs <- c(expression(paste(delta," Weibull")),
+            expression(paste("SO 1-sided")), expression(paste("SO 2-sided")) 
+                               
+            )#, expression(paste(delta, " Identity")) ) #levels for your first factor (x1)
+  text.size<- list(cex=.7) 
+  
+  varnames<-c( expression("Similarity: ") )
+  strip.default(which.given, ..., factor.levels = levs, var.name=varnames,
+                strip.names = c(TRUE),strip.levels=c(T),
+                sep=expression(paste("")),
+                bg = bgColors[1],
+                par.strip.text = text.size
+  )
+}
+
+my.strip9a.left <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg) {
+  levs <-  c(expression(paste("Keep ", D[1])), expression(paste("Discard ", D[1]))) #levels for your second factor (x2)
+
+    text.size<-list(cex=.7) 
+  
+  varnames<-c(expression(""))
+  
+  strip.default(which.given, ..., factor.levels = levs, var.name=varnames,
+                strip.names = c(TRUE),strip.levels=c(T),
+                sep=expression(paste("")),
+                bg = bgColors[1],
+                par.strip.text = text.size
+  )
+}
 
 ## Appendix A
 

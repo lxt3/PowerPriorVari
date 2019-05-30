@@ -279,14 +279,16 @@ sims<-data.frame(mu=rep(c(-1,-.75,-.5,-.25,-.1,0,.1,.25,.5,.75,1),4*16),        
 ##n=100
 source("stripFunctionsEqSim.R")
 require(lattice)
+require(latticeExtra)
 
-trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
-xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
+
+useOuterStrips(
+xyplot(rate~mu|similarity*discard.D1,data=sims,groups=percent,subscripts = TRUE,
 #       subset= sims$Size=="100",
        subset= sims$Size=="100" & (sims$similarity=="aSO2" | sims$similarity=="aSO1" | sims$similarity=="bKS-1"),  # no identity for delta measure
        
 #       layout=c(4,2),#as.table=TRUE,  
-       layout=c(2,3),#as.table=TRUE,  # no identity for delta measure
+       layout=c(3,2),#as.table=TRUE,  # no identity for delta measure
 
        key = simpleKey(c("100%", "75%", "50%", "25%"), col=c(1,4,3,2),points=F,border=T,
                        columns=4, space="top",
@@ -296,48 +298,57 @@ xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
        scales=list(y=list(tick.number=6), x=list(at=c(-1,-.5,0,.5,1), 
                                                  labels=c(" -1.0","-0.5","0", "0.5","1.0 ")), 
                    cex=.7, tck=c(1,0), relation="same",alternating=c(1,1)), 
-       strip=my.strip9a,
+#       strip=my.strip9a,
        drop.unused.levels = TRUE,
        panel = function(x, y,groups,subscripts) {
          panel.grid(h = 0, v = 0)
          panel.xyplot(x, y, pch=20,subscripts = subscripts,groups=groups,col=1:4)
          panel.superpose(x,y,subscripts = subscripts,groups=groups,col=1:4, 
                          panel.groups=panel.xyplot, type="l")#loess,
-       }#,
+       },
+      par.settings=list(layout.heights = list(axis.xlab.padding=0), drop.unused.levels=list(cond=TRUE, data=TRUE))
+), 
+strip=my.strip9a.top,
+strip.left=my.strip9a.left
 )
-trellis.par.set(layout.heights = list(axis.xlab.padding=1)) # default is 1
 
 
 ##n=25
 source("stripFunctionsEqSim.R")
 require(lattice)
 
-trellis.par.set(layout.heights = list(axis.xlab.padding=0)) # default is 1
-xyplot(rate~mu|discard.D1*similarity,data=sims,groups=percent,subscripts = TRUE,
-       #subset= sims$Size=="025",
-       subset= sims$Size=="025" & (sims$similarity=="aSO2" | sims$similarity=="aSO1" | sims$similarity=="bKS-1"),  # no identity for delta measure
-       
-       #layout=c(4,2),
-       layout=c(2,3),
-       
-       key = simpleKey(c("100%", "75%", "50%", "25%"), col=c(1,4,3,2),points=F,border=T,
-                       columns=4, space="top",
-                       title="Percent of D used",cex.title=.85), 
-       xlab = expression(theta^"*"), ylab = expression(paste("Bias of ", theta^"*")),
-       
-       scales=list(y=list(tick.number=6), x=list(at=c(-1,-.5,0,.5,1), 
-                                                 labels=c(" -1.0","-0.5","0", "0.5","1.0 ")), 
-                   cex=.7, tck=c(1,0), relation="same",alternating=c(1,1)), 
-       strip=my.strip9a,
-       panel = function(x, y,groups,subscripts) {
-         panel.grid(h = 0, v = 0)
-         panel.xyplot(x, y, pch=20,subscripts = subscripts,groups=groups,col=1:4)
-         panel.superpose(x,y,subscripts = subscripts,groups=groups,col=1:4, 
-                         panel.groups=panel.xyplot, type="l")
-       }#,
-)
-trellis.par.set(layout.heights = list(axis.xlab.padding=1)) # default is 1
+require(latticeExtra)
 
+
+useOuterStrips(
+  xyplot(rate~mu|similarity*discard.D1,data=sims,groups=percent,subscripts = TRUE,
+         #       subset= sims$Size=="025",
+         subset= sims$Size=="025" & (sims$similarity=="aSO2" | sims$similarity=="aSO1" | sims$similarity=="bKS-1"),  # no identity for delta measure
+         
+         #       layout=c(4,2),#as.table=TRUE,  
+         layout=c(3,2),#as.table=TRUE,  # no identity for delta measure
+         
+         key = simpleKey(c("100%", "75%", "50%", "25%"), col=c(1,4,3,2),points=F,border=T,
+                         columns=4, space="top",
+                         title="Percent of D used",cex.title=.85), 
+         xlab = expression(theta^"*"), ylab = expression(paste("Bias of ", theta^"*")),
+         
+         scales=list(y=list(tick.number=6), x=list(at=c(-1,-.5,0,.5,1), 
+                                                   labels=c(" -1.0","-0.5","0", "0.5","1.0 ")), 
+                     cex=.7, tck=c(1,0), relation="same",alternating=c(1,1)), 
+         #       strip=my.strip9a,
+         drop.unused.levels = TRUE,
+         panel = function(x, y,groups,subscripts) {
+           panel.grid(h = 0, v = 0)
+           panel.xyplot(x, y, pch=20,subscripts = subscripts,groups=groups,col=1:4)
+           panel.superpose(x,y,subscripts = subscripts,groups=groups,col=1:4, 
+                           panel.groups=panel.xyplot, type="l")#loess,
+         },
+         par.settings=list(layout.heights = list(axis.xlab.padding=0), drop.unused.levels=list(cond=TRUE, data=TRUE))
+  ), 
+  strip=my.strip9a.top,
+  strip.left=my.strip9a.left
+)
 
 #### Figure 6 - alternative (MSE) not used in paper
 
