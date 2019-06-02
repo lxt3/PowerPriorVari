@@ -21,12 +21,12 @@ seed.<-seed.init<-3 # seed used for current draft of paper
 np<-6
 nworkers<-np-1
 
-n0=25
+n0=50
 n<-n0 
 
-external=F#T  # T is used to get Figures 7 in paper; otherwise set to F
+external=F#T  # T is used to get external SD Figures in paper; otherwise set to F
 
-OC<- "typeI"  #  "power" # "typeI"  # are you calculating type I error, alpha0, and bias or power?
+OC<-  "typeI" # "power" # "typeI"  # are you calculating type I error, alpha0, and bias or power?
 mus=c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1)  # type I and bias and alpha0
 #mus=c(-1,-.75,-.5, -.25, -.1)  # use for External, even though you calculate type I error, etc
 #mus=c(-.35, -.25, -.1,0) # power
@@ -34,13 +34,13 @@ mus=c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1)  # type I and bias and alpha0
 mu0<- 0
 power.null<- -0.5 # null for power simulations
 
-discfun<-  "equiv" #"wbord" #"wb"  # what is the general discount fcn: 
+discfun<- "equiv" #"wbord" #"wb"  # what is the general discount fcn: 
                                     # "equiv" = similarity region disc fun
                                     # "wb" = KS discount fcn (old, not used anymore)
                                     # "wbord" = stochastic ordering (as per Haddad et al. 2017)
-two.sided<-F#T#F#T  # two-sided discount function or not (equiv is always one-sided, not matter what you put here)
+two.sided<-T#F#T  # two-sided discount function or not (equiv is always one-sided, not matter what you put here)
 
-post.prob.only<-T#F # used with equivalence similarity measure; T = identity discount fcn
+post.prob.only<-F#T#F # used with equivalence similarity measure; T = identity discount fcn
 delta<-.2 # used with equivalence similarity measure
 
 max_alpha<-1#0.50
@@ -138,15 +138,16 @@ if(is.null(sinkfname)){
 }
 
 
-# seed2.=5 was used to get a D0 data set for n=25 that had a sample mean close to 0, true prior mean
-if(n0==25) seed2.<-5 else seed2.<-seed.
-set.seed(seed2.) # used in paper (same seed for every parameter configuation)
-
-# generate D0 
-D0<-rnorm(mean=mu0, n=n0)
-
 # reset seed for all to seed.
 set.seed(seed.) # used in paper (same seed for every parameter configuation)
+
+
+# seed2.=5 was used to get a D0 data set for n=25 that had a sample mean close to 0, true prior mean
+#if(n0==25) seed2.<-5 else seed2.<-seed.
+#set.seed(seed2.) # used in paper (same seed for every parameter configuation)
+
+# generate D0 
+D0<-scale(rnorm(mean=mu0, n=n0))
 
 
 # run nsim simulations per parameter configuration (percent and mu value)
