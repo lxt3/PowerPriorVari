@@ -21,18 +21,18 @@ seed.<-seed.init<-3 # seed used for current draft of paper
 np<-6
 nworkers<-np-1
 
-n0=50
+n0=100
 n<-n0 
 
 external=F#T  # T is used to get external SD Figures in paper; otherwise set to F
 
-OC<-  "typeI" # "power" # "typeI"  # are you calculating type I error, alpha0, and bias or power?
-mus=c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1)  # type I and bias and alpha0
+OC<-  "power" # "typeI"  # are you calculating type I error, alpha0, and bias or power?
+mus=c(0,.1,.2,.3,.4) #c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1)  # type I and bias and alpha0
 #mus=c(-1,-.75,-.5, -.25, -.1)  # use for External, even though you calculate type I error, etc
 #mus=c(-.35, -.25, -.1,0) # power
 
-mu0<- 0
-power.null<- -0.5 # null for power simulations
+mu0<- .2 # 2/sqrt(n0)
+power.null<- 0 #-0.5 # null for power simulations
 
 discfun<- "equiv" #"wbord" #"wb"  # what is the general discount fcn: 
                                     # "equiv" = similarity region disc fun
@@ -40,80 +40,86 @@ discfun<- "equiv" #"wbord" #"wb"  # what is the general discount fcn:
                                     # "wbord" = stochastic ordering (as per Haddad et al. 2017)
 two.sided<-T#F#T  # two-sided discount function or not (equiv is always one-sided, not matter what you put here)
 
-post.prob.only<-F#T#F # used with equivalence similarity measure; T = identity discount fcn
-delta<-.2 # used with equivalence similarity measure
+post.prob.only<-T#F # used with all similarity measures; T = identity discount fcn
+delta<-.06 #.04 #.2 # used with equivalence similarity measure
+#delta<-10000 # fixed alpha
 
-max_alpha<-1#0.50
+fixed<-FALSE #TRUE #FALSE
+fixed.alpha<-.5
+max_alpha<-0.50 #1
+
+percents=rev(c(.25,.5,.75,1))
 
 # These if statements define any disc fcn parameter, and set the core name of output files
 if(discfun=="wb" && OC=="typeI" ){
   if(two.sided){
-    fname.core<-paste0(path.to.files,"resultsKSWeibull2siden")
+    fname.core<-paste0(path.to.files,"resultsKSWeibull2side","maxalpha",max_alpha,"n")
     ws=.9; wsh=12;  # if weibull_scale=99 that represents pvalue equals weight
   } else{
-    fname.core<-paste0(path.to.files,"resultsKSWeibull1siden")
+    fname.core<-paste0(path.to.files,"resultsKSWeibull1side","maxalpha",max_alpha,"n")
     ws=.9; wsh=20;
   }
 }
 
 if(discfun=="wb" && OC=="power" ){
   if(two.sided){
-    fname.core<-paste0(path.to.files,"powerKSWeibull2siden")
+    fname.core<-paste0(path.to.files,"powerKSWeibull2side","maxalpha",max_alpha,"n")
     ws=.9; wsh=12; # if weibull_scale=99 that represents pvalue equals weight
   } else{
-    fname.core<-paste0(path.to.files,"powerKSWeibull1siden")
+    fname.core<-paste0(path.to.files,"powerKSWeibull1side","maxalpha",max_alpha,"n")
     ws=.9; wsh=20;
   }
 }
 
 
 if(discfun=="wbord" && OC=="typeI" ){
+  Ponly<-ifelse(post.prob.only,"Ponly","")
   if(two.sided){
-    fname.core<-paste0(path.to.files,"resultsSOWeibull2siden")
-    ws=.4; wsh=1.5; # if weibull_scale=99 that represents pvalue equals weight
+    fname.core<-paste0(path.to.files,"resultsSOWeibull2side",Ponly,"maxalpha",max_alpha,"n")
+    ws=.4; wsh=1.5; 
   } else{
-    fname.core<-paste0(path.to.files,"resultsSOWeibull1siden")
-    ws=.65; wsh=3; # if weibull_scale=99 that represents pvalue equals weight
+    fname.core<-paste0(path.to.files,"resultsSOWeibull1siden",Ponly,"maxalpha",max_alpha,"n")
+    ws=.65; wsh=3; 
   }
 }
 
 if(discfun=="wbord" && OC=="power" ){
+  Ponly<-ifelse(post.prob.only,"Ponly","")
   if(two.sided){
-    fname.core<-paste0(path.to.files,"powerSOWeibull2siden")
-    ws=.4; wsh=1.5; # if weibull_scale=99 that represents pvalue equals weight
+    fname.core<-paste0(path.to.files,"powerSOWeibull2side",Ponly,"maxalpha",max_alpha,"n")
+    ws=.4; wsh=1.5; 
   } else{
-    fname.core<-paste0(path.to.files,"powerSOWeibull1siden")
-    ws=.65; wsh=3; # if weibull_scale=99 that represents pvalue equals weight
+    fname.core<-paste0(path.to.files,"powerSOWeibull1side",Ponly,"maxalpha",max_alpha,"n")
+    ws=.65; wsh=3; 
   }
 }
 
 if(discfun=="equiv" && OC=="typeI" ){
   Ponly<-ifelse(post.prob.only,"Ponly","")
     fname.core<-paste0(path.to.files,"resultsEQ1sideDelta",Ponly,delta,"maxalpha",max_alpha,"n")
-    ws=.65; wsh=3; # if weibull_scale=99 that represents pvalue equals weight
+    ws=.65; wsh=3; 
 }
 
 if(discfun=="equiv" && OC=="power" ){
   Ponly<-ifelse(post.prob.only,"Ponly","")
     fname.core<-paste0(path.to.files,"powerEQ1sideDelta",Ponly,delta,"maxalpha",max_alpha,"n")
-    ws=.65; wsh=3; # if weibull_scale=99 that represents pvalue equals weight
+    ws=.65; wsh=3; 
 }
 
 # the sink file collects results in human readable form; not for use by R in processing results
-sinkfname<-paste0(fname.core,n0,".txt")
+sinkfname<-paste0(fname.core,n,".txt")
 
 # number of total simulations = 15,000; number of sims per worker = nsim
 nsim<-15000/nworkers
 nmcmc<-40000#45000 # num mcmc iterations
 prob.H1<-.975
 
-percents=rev(c(.25,.5,.75,1))
 
 
 if(external==T) {
-  fname<-paste0(fname.core, n0, "Ext.RData") 
+  fname<-paste0(fname.core, n, "Ext.RData") 
 }else { 
-  fname<-paste0(fname.core, n0, ".RData")
+  fname<-paste0(fname.core, n, ".RData")
 }
 
 # source functions
@@ -134,7 +140,7 @@ results.SDF<-vector(length=dims) #
 
 
 if(is.null(sinkfname)){
-  sinkfname<-paste(fname.core,n0,".txt",sep="")
+  sinkfname<-paste(fname.core,n,".txt",sep="")
 }
 
 
@@ -146,8 +152,8 @@ set.seed(seed.) # used in paper (same seed for every parameter configuation)
 #if(n0==25) seed2.<-5 else seed2.<-seed.
 #set.seed(seed2.) # used in paper (same seed for every parameter configuation)
 
-# generate D0 
-D0<-scale(rnorm(mean=mu0, n=n0))
+# generate D0 scaled to have mean mu0, variance 1
+D0<-scale(rnorm(mean=mu0, n=n0))+mu0
 
 
 # run nsim simulations per parameter configuration (percent and mu value)

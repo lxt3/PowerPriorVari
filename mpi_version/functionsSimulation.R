@@ -68,48 +68,54 @@ Loss_function1 <-function(mu, sigma2, N, mu0, sigma02, N0, number_mcmc, D0, D) {
   sigma2_post_flate0 = 1/rgamma(number_mcmc, (N0 - 1)/2, ((N0 - 1) * sigma02)/2)  
   mu_post_flate0 = rnorm(number_mcmc, mu0, (sigma2_post_flate0/((N0 - 
                                                                    1) + 1))^0.5)  
+  meandiff<-(mu_post_flate - mu_post_flate0)
+  obsmeandiff<-mu-mu0
+  
   ########## test of model vs real###########
-  if(ws==99){  # ws is defined in global environment
-    alpha_loss=p_test1
-  }else{
+  
+  if(discfun=="wb"){ # KS measure of similarity
     
-    if(discfun=="wb"){
-      
-      if(two.sided){
-        # two-sided KS measure
-        stat<-as.numeric(ks.test(D0,D)$statistic) # uses actual data D0 and D
-      }
-      else{
-        # one-sided KS
-        stat<-as.numeric(ks.test(D0,D, alternative="less")$statistic)
-      }
-      
-      stat<-ifelse(stat>0,stat,0)
-      p_test1<-1-stat 
-      alpha_loss <-alpha_lossf(p_test1)
-      
+    if(two.sided){
+      # two-sided KS measure
+      stat<-as.numeric(ks.test(D0,D)$statistic) # uses actual data D0 and D
     }
-    else if(discfun=="wbord"){
-      p_test1<-mean((mu_post_flate - mu_post_flate0)>=0)#/(N0-N+1)  # if current mean better than prior, higher p
-      
-      if(!two.sided){
-        # one-sided stochastic ordering
-        alpha_loss <-alpha_lossf(p_test1)
-      } 
-      else {
-        # two-sided stochastic ordering
-        alpha_loss <- ifelse(p_test1<=.5, alpha_lossf(p_test1), alpha_lossf(1-p_test1))
-      }
+    else{
+      # one-sided KS
+      stat<-as.numeric(ks.test(D0,D, alternative="less")$statistic)
     }
+    
+    stat<-ifelse(stat>0,stat,0)
+    p_test1<-1-stat 
     
   }
+  else if(discfun=="wbord"){ # stochastic ordering similarity
+    p_test1<-mean(meandiff>=0)#/(N0-N+1)  # if current mean better than prior, higher p
+    
+    if(two.sided){
+      # two-sided stochastic ordering
+      if(p_test1 > .5) p_test1<-1-p_test1
+    } 
+  }
+  
+  else { # delta similarity margin measure
+    if((obsmeandiff>=-delta) && (obsmeandiff<=delta))
+    {
+      # post prob true diff is between -delta and delta
+      p_test1<-mean(((meandiff>-delta) & (meandiff<delta))) # how many mean diffs fall within equiv interval
+    } 
+    else {
+      p_test1<-0
+    }
+  }
+  
+  alpha_loss <-if(post.prob.only) p_test1 else {alpha_lossf(p_test1) }
+  
   
   return(list(alpha_loss = alpha_loss,  mu_post_flate = mu_post_flate,  mu0 = mu_post_flate0))
   
 }
 
-
-FUN<-function(jid, nsim, n, mu, percent,null,prob.H1,nmcmc,max_alpha,D0)
+FUN<-function(jid, nsim, n, mu, percent,null,prob.H1,nmcmc,max_alpha,D0,fixed=FALSE,fixed.alpha=1)
 {
 
   rank.nsim<-round(nsim/length(jid))
@@ -120,17 +126,19 @@ for(i in 1:rank.nsim){
   
   if((i/1000)%in%c(1:20)) print(i)
   
-  # generate ith D from this mu
+  # generate ith D from this mu and scale to give it sd=1
   D<-rnorm(mean=mu, n=n, sd=1)
+  #D<-D/sd(D)
   
   # set D1 = x% of D
   D1<- D[1:(percent*n)]
   
   
-  # estimate alpha0 using D0 and D1
-  
+  # estimate alpha0 using D0 and D1 (unless fixed alpha0)
+  if(!fixed){
   if(external){
     D1<-rnorm(mu, n=percent*n, sd=1)
+    #D1<-D1/sd(D1)
     fit<-mu_posterior(mu      = mean(D1),
                       sigma2   = var(D1),
                       N       = length(D1), 
@@ -156,7 +164,8 @@ for(i in 1:rank.nsim){
   }
   
   alpha_use<- alpha[i]<-ifelse(fit$alpha_loss>max_alpha, max_alpha, fit$alpha_loss)  
-  
+  }
+  else alpha_use<-alpha[i]<-fixed.alpha
   
   # use alpha0 from above to estimate posterior
   

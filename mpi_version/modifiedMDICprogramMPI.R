@@ -6,8 +6,8 @@ comm.set.seed(seed.init, diff=TRUE)
 
 # Generate nsim current data sets and compute posterior inference using prior D0
 # Definition of FUN is in functionsSimulation.R
-ret<-task.pull(1:nworkers,FUN, nsim=nsim, n=n, mu=mu, percent=percent,null=null,
-          prob.H1=prob.H1,nmcmc=nmcmc,max_alpha=max_alpha,D0=D0)
+ret<-task.pull(1:np,FUN, nsim=nsim, n=n, mu=mu, percent=percent,null=null,
+          prob.H1=prob.H1,nmcmc=nmcmc,max_alpha=max_alpha,D0=D0,fixed=fixed,fixed.alpha=fixed.alpha)
 
 
 if(comm.rank()==0){
@@ -25,6 +25,7 @@ if(comm.rank()==0){
   cat("External?: ",external, "\n")
   
   print(ret.jobs)
+  cat("\n")
   sink()
   
 }
