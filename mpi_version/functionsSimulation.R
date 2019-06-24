@@ -16,16 +16,18 @@ mu_post_aug1 = function(mu, sigma2, N, mu0, sigma02, N0, N0_max, alpha_loss, num
 }
 
 ###################Combines the loss function and posterior estimation into one function
-mu_posterior = function(mu, sigma2, N, mu0, sigma02, N0, N0_max, number_mcmc, D0, D ) 
+
+mu_posterior = function(mu, sigma2, N, mu0, sigma02, N0, N0_max, number_mcmc, D0, D, max_alpha ) 
 {
   alpha_loss = Loss_function1(mu = mu, sigma2 = sigma2, N = N, mu0 = mu0, 
                               sigma02 = sigma02, N0 = N0, number_mcmc = number_mcmc, D0,D)
   
   mu_posterior = mu_post_aug1(mu = mu, sigma2 = sigma2, N = N, mu0 = mu0, 
-                              sigma02 = sigma02, N0 = N0, N0_max = N0_max, alpha_loss = alpha_loss$alpha_loss, 
+                              sigma02 = sigma02, N0 = N0, N0_max = N0_max, 
+                              alpha_loss = min(alpha_loss$alpha_loss,max_alpha), 
                               number_mcmc = number_mcmc)
   
-  return(list(alpha_loss = alpha_loss$alpha_loss, 
+  return(list(alpha_loss = min(alpha_loss$alpha_loss,max_alpha), 
               mu_posterior = mu_posterior$mu_post,
               sigma2_posterior = mu_posterior$sigma2_post,
               effective_N0=mu_posterior$effective_N0, 
@@ -147,7 +149,8 @@ for(i in 1:rank.nsim){
                       N0      = length(D0),
                       N0_max=length(D0)*max_alpha, 
                       number_mcmc=nmcmc,
-                      D0=D0, D=D1
+                      D0=D0, D=D1,
+                      max_alpha=max_alpha
     )
   }
   else{
@@ -159,11 +162,12 @@ for(i in 1:rank.nsim){
                       N0      = length(D0),
                       N0_max=length(D0)*max_alpha, 
                       number_mcmc=nmcmc,
-                      D0=D0, D=D1
+                      D0=D0, D=D1,
+                      max_alpha=max_alpha
     )
   }
   
-  alpha_use<- alpha[i]<-ifelse(fit$alpha_loss>max_alpha, max_alpha, fit$alpha_loss)  
+  alpha_use<- alpha[i]<-fit$alpha_loss #min(fit$alpha_loss, max_alpha)  
   }
   else alpha_use<-alpha[i]<-fixed.alpha
   

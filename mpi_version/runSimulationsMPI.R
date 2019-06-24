@@ -24,28 +24,28 @@ nworkers<-np-1
 n0=100
 n<-n0 
 
-external=F#T  # T is used to get external SD Figures in paper; otherwise set to F
+external=T#F#T  # T is used to get external SD Figures in paper; otherwise set to F
 
 OC<-  "power" # "typeI"  # are you calculating type I error, alpha0, and bias or power?
-mus=c(0,.1,.2,.3,.4) #c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1)  # type I and bias and alpha0
+mus=c(0,.1,.2,.3,.4) #c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1)  # type I and bias and alpha0 (includes power if power.null==0)
 #mus=c(-1,-.75,-.5, -.25, -.1)  # use for External, even though you calculate type I error, etc
 #mus=c(-.35, -.25, -.1,0) # power
 
 mu0<- .2 # 2/sqrt(n0)
 power.null<- 0 #-0.5 # null for power simulations
 
-discfun<- "equiv" #"wbord" #"wb"  # what is the general discount fcn: 
+discfun<-  "equiv" #"wbord" #"wb"  # what is the general discount fcn: 
                                     # "equiv" = similarity region disc fun
                                     # "wb" = KS discount fcn (old, not used anymore)
                                     # "wbord" = stochastic ordering (as per Haddad et al. 2017)
-two.sided<-T#F#T  # two-sided discount function or not (equiv is always one-sided, not matter what you put here)
+two.sided<-F#T  # two-sided discount function or not (equiv is always one-sided, not matter what you put here)
 
 post.prob.only<-T#F # used with all similarity measures; T = identity discount fcn
-delta<-.06 #.04 #.2 # used with equivalence similarity measure
+delta<-.04#.1 #.2 # used with equivalence similarity measure
 #delta<-10000 # fixed alpha
 
 fixed<-FALSE #TRUE #FALSE
-fixed.alpha<-.5
+fixed.alpha<-.5#1#.5
 max_alpha<-0.50 #1
 
 percents=rev(c(.25,.5,.75,1))
