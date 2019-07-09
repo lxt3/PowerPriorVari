@@ -17,6 +17,10 @@ if(comm.rank()==0){
   })
   ret.jobs<-Reduce("+",ret.jobs)/np # means
   
+  SDs<-lapply(ret, function(x){
+    c(x$sd.1)
+  })
+  
   # write results to sink
   sink(sinkfname,split=T, append=T) 
   cat("mu: ",mu, "\n")
