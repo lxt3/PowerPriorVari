@@ -13,7 +13,7 @@
 
 if(!dir.exists("output")) dir.create("output")
 
-path.to.files<-paste0(getwd(),"/output/EQ/")
+path.to.files<-paste0(getwd(),"/output/EQ")
 
 seed.<-seed.init<-3 # seed used for current draft of paper
 
@@ -21,8 +21,8 @@ seed.<-seed.init<-3 # seed used for current draft of paper
 np<-6
 nworkers<-np-1
 
-n0=100
-n<-n0 
+n0=200
+n<-1+n0/2 
 
 external=F#T  # T is used to get external SD Figures in paper; otherwise set to F
 
@@ -34,20 +34,22 @@ mus=c(0,.1,.2,.3,.4) #c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1)  # type I and 
 mu0<- .2 # 2/sqrt(n0)
 power.null<- 0 #-0.5 # null for power simulations
 
-discfun<- "wbord" #"equiv" #"wbord" #"wb"  # what is the general discount fcn: 
+discfun<- "equiv" #"wbord" #"wb"  # what is the general discount fcn: 
                                     # "equiv" = similarity region disc fun
                                     # "wb" = KS discount fcn (old, not used anymore)
                                     # "wbord" = stochastic ordering (as per Haddad et al. 2017)
 two.sided<-T#F#T  # two-sided discount function or not (equiv is always one-sided, not matter what you put here)
 
-post.prob.only<-T#F # used with all similarity measures; T = identity discount fcn
-delta<-.1 #.2 # used with equivalence similarity measure
-#delta<-10000 # fixed alpha
+post.prob.only<-T#F # used with all similarity measures except KS ("wb"); T = identity discount fcn
+delta<-.2 #.2 # used with equivalence similarity measure
 
+max_alpha<-.5#0.50 #1
+
+# Is alpha0 fixed?  (File output names for fixed a0 are not set up.  So take to save file in different directory, and then change name)
 fixed<-FALSE #TRUE #FALSE
-fixed.alpha<-.5#1#.5
-max_alpha<-1#0.50 #1
+fixed.alpha<-.25#1#.5  # also change percents = c(1) only
 
+# percent of D to make up D1
 percents=rev(c(.25,.5,.75,1))
 
 # These if statements define any disc fcn parameter, and set the core name of output files
@@ -148,10 +150,6 @@ if(is.null(sinkfname)){
 # reset seed for all to seed.
 set.seed(seed.) # used in paper (same seed for every parameter configuation)
 
-
-# seed2.=5 was used to get a D0 data set for n=25 that had a sample mean close to 0, true prior mean
-#if(n0==25) seed2.<-5 else seed2.<-seed.
-#set.seed(seed2.) # used in paper (same seed for every parameter configuation)
 
 # generate D0 scaled to have mean mu0, variance 1
 D0<-scale(rnorm(mean=mu0, n=n0))+mu0
