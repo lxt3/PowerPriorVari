@@ -13,7 +13,7 @@
 
 if(!dir.exists("output")) dir.create("output")
 
-path.to.files<-paste0(getwd(),"/output/EQ")
+path.to.files<-paste0(getwd(),"/output/EQ/")
 
 seed.<-seed.init<-3 # seed used for current draft of paper
 
@@ -21,10 +21,10 @@ seed.<-seed.init<-3 # seed used for current draft of paper
 np<-6
 nworkers<-np-1
 
-n0=200
-n<-1+n0/2 
+n0=100#200
+n<-n0#1+n0/2 
 
-external=F#T  # T is used to get external SD Figures in paper; otherwise set to F
+external=T#F#T  # T is used to get external SD Figures in paper; otherwise set to F
 
 OC<-  "power" # "typeI"  # are you calculating type I error, alpha0, and bias or power?
 mus=c(0,.1,.2,.3,.4) #c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1)  # type I and bias and alpha0 (includes power if power.null==0)
@@ -43,7 +43,7 @@ two.sided<-T#F#T  # two-sided discount function or not (equiv is always one-side
 post.prob.only<-T#F # used with all similarity measures except KS ("wb"); T = identity discount fcn
 delta<-.2 #.2 # used with equivalence similarity measure
 
-max_alpha<-.5#0.50 #1
+max_alpha<-1#.5#0.50 #1
 
 # Is alpha0 fixed?  (File output names for fixed a0 are not set up.  So take to save file in different directory, and then change name)
 fixed<-FALSE #TRUE #FALSE
@@ -123,6 +123,7 @@ if(external==T) {
 }else { 
   fname<-paste0(fname.core, n, ".RData")
 }
+
 
 # source functions
 source('functionsSimulation.R')
