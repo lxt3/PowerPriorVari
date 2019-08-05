@@ -7,9 +7,9 @@ figureFunctionPPOnly<-function(n.use, path.stem, max.alpha) {
   
 # same for all characteristics
 fname.reg.EQ1<-paste(path.stem,"powerEQ1sideDeltaPonly0.04maxalpha", max.alpha, "n",n.use,".RData", sep="") # there's no "side" here, need to change
-fname.reg.EQ2<-paste(path.stem,"powerEQ1sideDeltaPonly0.06maxalpha", max.alpha, "n",n.use,".RData", sep="") 
-fname.reg.EQ3<-paste(path.stem,"powerEQ1sideDeltaPonly0.08maxalpha", max.alpha, "n",n.use,".RData", sep="") 
-fname.reg.EQ4<-paste(path.stem,"powerEQ1sideDeltaPonly0.1maxalpha", max.alpha, "n",n.use,".RData", sep="") 
+fname.reg.EQ2<-paste(path.stem,"powerEQ1sideDeltaPonly0.08maxalpha", max.alpha, "n",n.use,".RData", sep="") 
+fname.reg.EQ3<-paste(path.stem,"powerEQ1sideDeltaPonly0.12maxalpha", max.alpha, "n",n.use,".RData", sep="") 
+fname.reg.EQ4<-paste(path.stem,"powerEQ1sideDeltaPonly0.16maxalpha", max.alpha, "n",n.use,".RData", sep="") 
 
 fname.reg.Ord1<-paste(path.stem,"powerSOWeibull1sidePonlymaxalpha", max.alpha,"n", n.use,".RData", sep="")  # Stoch ord 1-sided (it's not Weibull, need to change)
 fname.reg.Ord2<-paste(path.stem,"powerSOWeibull2sidePonlymaxalpha", max.alpha, "n",n.use,".RData", sep="")  # Stoch ord 2-sided

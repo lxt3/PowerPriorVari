@@ -24,7 +24,7 @@ nworkers<-np-1
 n0=100#200
 n<-n0#1+n0/2 
 
-external=T#F#T  # T is used to get external SD Figures in paper; otherwise set to F
+external=F#T  # T is used to get external SD Figures in paper; otherwise set to F
 
 OC<-  "power" # "typeI"  # are you calculating type I error, alpha0, and bias or power?
 mus=c(0,.1,.2,.3,.4) #c(-1,-.75,-.5, -.25, -.1,0,.1,.25,.5,.75,1)  # type I and bias and alpha0 (includes power if power.null==0)
@@ -41,9 +41,9 @@ discfun<- "equiv" #"wbord" #"wb"  # what is the general discount fcn:
 two.sided<-T#F#T  # two-sided discount function or not (equiv is always one-sided, not matter what you put here)
 
 post.prob.only<-T#F # used with all similarity measures except KS ("wb"); T = identity discount fcn
-delta<-.2 #.2 # used with equivalence similarity measure
+delta<-.16 #.2 # used with equivalence similarity measure
 
-max_alpha<-1#.5#0.50 #1
+max_alpha<-1#0.50 #1
 
 # Is alpha0 fixed?  (File output names for fixed a0 are not set up.  So take to save file in different directory, and then change name)
 fixed<-FALSE #TRUE #FALSE

@@ -1,7 +1,7 @@
 
 ############################################################# Calculates posterior estimation for mu distribution# Given alpha_loss
 ############################################################# value and maximum strength of(N0_max) # prior if alpha_loss =1 #
-mu_post_aug1 = function(mu, sigma2, N, mu0, sigma02, N0, N0_max, alpha_loss, number_mcmc) {
+mu_post_aug1 = function(mu, sigma2, N, mu0, sigma02, N0, alpha_loss, number_mcmc) {
   
   effective_N0 = N0 * alpha_loss # modified from orignal TH program
   
@@ -17,13 +17,13 @@ mu_post_aug1 = function(mu, sigma2, N, mu0, sigma02, N0, N0_max, alpha_loss, num
 
 ###################Combines the loss function and posterior estimation into one function
 
-mu_posterior = function(mu, sigma2, N, mu0, sigma02, N0, N0_max, number_mcmc, D0, D, max_alpha ) 
+mu_posterior = function(mu, sigma2, N, mu0, sigma02, N0, number_mcmc, D0, D, max_alpha ) 
 {
   alpha_loss = Loss_function1(mu = mu, sigma2 = sigma2, N = N, mu0 = mu0, 
                               sigma02 = sigma02, N0 = N0, number_mcmc = number_mcmc, D0,D)
   
   mu_posterior = mu_post_aug1(mu = mu, sigma2 = sigma2, N = N, mu0 = mu0, 
-                              sigma02 = sigma02, N0 = N0, N0_max = N0_max, 
+                              sigma02 = sigma02, N0 = N0, #N0_max = N0_max, 
                               alpha_loss = min(alpha_loss$alpha_loss,max_alpha), 
                               number_mcmc = number_mcmc)
   
@@ -33,21 +33,21 @@ mu_posterior = function(mu, sigma2, N, mu0, sigma02, N0, N0_max, number_mcmc, D0
               effective_N0=mu_posterior$effective_N0, 
               mu_posterior_flate = alpha_loss$mu_post_flate, 
               mu_prior = alpha_loss$mu0, 
-              mu = mu, N = N, mu0 = mu0, N0 = N0, N0_max = N0_max))
+              mu = mu, N = N, mu0 = mu0, N0 = N0))
 }
 
 ######## modified mu_posterior to input alpha_loss from a prior interim analysis
-mu_posterior2 = function(mu, sigma2, N, mu0, sigma02, N0, N0_max, number_mcmc, alpha_loss) 
+mu_posterior2 = function(mu, sigma2, N, mu0, sigma02, N0, number_mcmc, alpha_loss) 
 {
   
   mu_posterior = mu_post_aug1(mu = mu, sigma2 = sigma2, N = N, mu0 = mu0, 
-                              sigma02 = sigma02, N0 = N0, N0_max = N0_max, alpha_loss = alpha_loss, 
+                              sigma02 = sigma02, N0 = N0, alpha_loss = alpha_loss, 
                               number_mcmc = number_mcmc)
   
   return(list( mu_posterior = mu_posterior$mu_post,
                sigma2_posterior = mu_posterior$sigma2_post,
                effective_N0=mu_posterior$effective_N0, 
-               mu = mu, N = N, mu0 = mu0, N0 = N0, N0_max = N0_max))  
+               mu = mu, N = N, mu0 = mu0, N0 = N0))  
 }
 
 
@@ -147,7 +147,7 @@ for(i in 1:rank.nsim){
                       mu0     = mean(D0),
                       sigma02  = var(D0),
                       N0      = length(D0),
-                      N0_max=length(D0)*max_alpha, 
+                      #N0_max=length(D0)*max_alpha, 
                       number_mcmc=nmcmc,
                       D0=D0, D=D1,
                       max_alpha=max_alpha
@@ -160,7 +160,7 @@ for(i in 1:rank.nsim){
                       mu0     = mean(D0),
                       sigma02  = var(D0),
                       N0      = length(D0),
-                      N0_max=length(D0)*max_alpha, 
+                      #N0_max=length(D0)*max_alpha, 
                       number_mcmc=nmcmc,
                       D0=D0, D=D1,
                       max_alpha=max_alpha
@@ -182,7 +182,7 @@ for(i in 1:rank.nsim){
                      mu0     = mean(D0),
                      sigma02  = var(D0),
                      N0      = length(D0),
-                     N0_max=length(D0)*max_alpha, 
+                     #N0_max=length(D0)*max_alpha, 
                      number_mcmc=nmcmc,
                      alpha_loss=alpha_use
   )
@@ -208,7 +208,7 @@ for(i in 1:rank.nsim){
                        mu0     = mean(D0),
                        sigma02  = var(D0),
                        N0      = length(D0),
-                       N0_max=length(D0)*max_alpha, 
+                      # N0_max=length(D0)*max_alpha, 
                        number_mcmc=nmcmc,
                        alpha_loss=alpha_use
     )
