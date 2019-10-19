@@ -2,12 +2,12 @@
 bgColors<-c("white","light grey","white")
 
 
-# Alpha0 for each Similarity measure
+# Alpha0 for each Similarity measure (all similarity measures on one plot)
 my.strip5a <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg,horizontal) {
   levs <- c(expression(paste("SO 1-sided")), expression(paste("SO 2-sided")),
             expression(paste(delta, " = 0.04")), expression(paste(delta, " = 0.06")),
             expression(paste(delta, " = 0.08")), expression(paste(delta, " = 0.10"))
-            ) #levels for your first factor (x1)
+            ) #levels for  first factor (x1)
 
   varnames<-expression("Similarity: ")
   
@@ -17,6 +17,22 @@ my.strip5a <- function(which.given, ..., factor.levels,var.name,par.strip.text,b
                 sep=expression(paste("")),
                 bg = bgColors[which.given],
                 par.strip.text = list(cex=.8)
+  )
+  
+}
+
+# Figure 2, 3, 4 in paper
+my.strip5aa <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg,horizontal) {
+  levs <- c("25%", "50%","100%")  #levels for  first factor (x1)
+  
+  varnames<-expression("Percent of D used: ")
+  
+  strip.default(which.given, ..., factor.levels = levs, var.name=varnames, 
+                strip.names = c(TRUE),strip.levels=c(T),
+                horizontal=TRUE,
+                sep=expression(paste("")),
+                bg = bgColors[which.given],
+                par.strip.text = list(cex=1.09)
   )
   
 }
@@ -50,6 +66,23 @@ my.strip6b <- function(which.given, ..., factor.levels,var.name,par.strip.text,b
   #  else c("25", "100")
   
   varnames<-c(expression(""), expression("Similarity: "))#, 
+  #            expression(paste("Sample Size: ")) )
+  
+  strip.default(which.given, ..., factor.levels = levs, var.name=varnames, #[c(1,3)], # c(1,3) is for two conditioning
+                strip.names = c(TRUE),strip.levels=c(T),
+                horizontal=TRUE,
+                sep=expression(paste("")),
+                bg = bgColors[which.given],
+                par.strip.text = list(cex=.8)
+  )
+  
+}
+
+# Power for both stochastic Similarity measures, along with a0=0,1,0.5 (without discard D1)
+my.strip6bb <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg,horizontal) {
+  levs <- c(expression(paste("SO 1-sided")), expression(paste("SO 2-sided"))) #levels for your first factor (x1)
+
+  varnames<-c(expression("Similarity: "))#, 
   #            expression(paste("Sample Size: ")) )
   
   strip.default(which.given, ..., factor.levels = levs, var.name=varnames, #[c(1,3)], # c(1,3) is for two conditioning
@@ -105,6 +138,25 @@ my.strip6d <- function(which.given, ..., factor.levels,var.name,par.strip.text,b
 }
 
 
+# Power for all delta region Similarity measures, along with a0=1,0.5 (without discard D1)
+my.strip6dd <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg,horizontal) {
+  levs <- c(expression(paste(delta," = 0.04")), expression(paste(delta, " = 0.06")), 
+                               expression(paste(delta, " = 0.08")), expression(paste(delta, " = 0.10")) ) #levels for your first factor (x1)
+  #  else c("25", "100")
+  
+  varnames<-c(expression("Similarity: "))#, 
+  #            expression(paste("Sample Size: ")) )
+  
+  strip.default(which.given, ..., factor.levels = levs, var.name=varnames, #[c(1,3)], # c(1,3) is for two conditioning
+                strip.names = c(TRUE),strip.levels=c(T),
+                horizontal=TRUE,
+                sep=expression(paste("")),
+                bg = bgColors[which.given],
+                par.strip.text = list(cex=.8)
+  )
+  
+}
+
 
 # Bias for stacked strips
 my.strip9a <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg) {
@@ -132,6 +184,26 @@ my.strip9c <- function(which.given, ..., factor.levels,var.name,par.strip.text,b
   #  else c("25", "100")
   
   varnames<-c(expression(""), expression("Similarity: "))#, 
+  #            expression(paste("Sample Size: ")) )
+  
+  strip.default(which.given, ..., factor.levels = levs, var.name=varnames, #[c(1,3)], # c(1,3) is for two conditioning
+                strip.names = c(TRUE),strip.levels=c(T),
+                horizontal=TRUE,
+                sep=expression(paste("")),
+                bg = bgColors[which.given],
+                par.strip.text = list(cex=.8)
+  )
+  
+}
+
+# Bias for both delta region Similarity measures, along with a0=1,0.5. No discard D1.
+my.strip9cc <- function(which.given, ..., factor.levels,var.name,par.strip.text,bg,horizontal) {
+  levs <- c(expression(paste("SO 1-sided")), expression(paste("SO 2-sided")),
+    expression(paste(delta," = 0.04")), expression(paste(delta, " = 0.10"))
+            ) #levels for your first factor (x1)
+  #  else c("25", "100")
+  
+  varnames<-c(expression("Similarity: "))#, 
   #            expression(paste("Sample Size: ")) )
   
   strip.default(which.given, ..., factor.levels = levs, var.name=varnames, #[c(1,3)], # c(1,3) is for two conditioning

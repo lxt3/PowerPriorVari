@@ -3,9 +3,11 @@ figureFunctionPPOnly<-function(n.use, path.stem, max.alpha) {
 
 # Uses posterior probability only as the discount function, 
 # SO has 1 and 2-sided results
+# EQ means delta-region measure.  The filenames are explicitly given out of convenience.  Filename for EQ results
+# includes "1side", but it is meaningless.
   
   
-# same for all characteristics
+# Create file names for EQ and SO averages
 fname.reg.EQ1<-paste(path.stem,"powerEQ1sideDeltaPonly0.04maxalpha", max.alpha, "n",n.use,".RData", sep="") # there's no "side" here, need to change
 fname.reg.EQ2<-paste(path.stem,"powerEQ1sideDeltaPonly0.08maxalpha", max.alpha, "n",n.use,".RData", sep="") 
 fname.reg.EQ3<-paste(path.stem,"powerEQ1sideDeltaPonly0.12maxalpha", max.alpha, "n",n.use,".RData", sep="") 
@@ -17,7 +19,7 @@ fname.reg.Ord2<-paste(path.stem,"powerSOWeibull2sidePonlymaxalpha", max.alpha, "
 
 # load and assign to objects
 
-# EQ 1
+# EQ 1 - lowest delta
 load(fname.reg.EQ1)
 results.alpha.EQ1side<-results.alpha.equiv  # alpha0
 results.prob.dropF.EQ1side<-results.prob.dropF.equiv  # type I error without dropping
@@ -147,7 +149,9 @@ list(alpha=c(
 
 figureFunctionExt<-function(n.use, path.stem,max.alpha) {
   
-  # same for all characteristics
+  # Function to compare using external data set to choose alpha instead of interim data set (Appendix C)
+  
+  # Create file names
   fname.reg.EQ1<-paste(path.stem,"powerEQ1sideDeltaPonly0.04maxalpha", max.alpha, "n",n.use,"Ext.RData", sep="") # there's no "side" here, need to change
   fname.reg.EQ2<-paste(path.stem,"powerEQ1sideDeltaPonly0.06maxalpha", max.alpha, "n",n.use,"Ext.RData", sep="") 
   fname.reg.EQ3<-paste(path.stem,"powerEQ1sideDeltaPonly0.08maxalpha", max.alpha, "n",n.use,"Ext.RData", sep="") 
