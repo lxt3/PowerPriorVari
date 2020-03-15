@@ -1,4 +1,5 @@
 # One-arm trial (OPC) example
+#### Adapted from Haddad et al. (2017) Incorporation of stochastic engineering models as prior information in Bayesian medical device trials.  Journal of  Biopharmaceutical Statistics. 10: 1-15.
 
 # set different seeds per processor (diff=TRUE)
 #comm.set.seed(seed., diff=TRUE)  

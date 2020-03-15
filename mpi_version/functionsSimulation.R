@@ -1,3 +1,4 @@
+#### Adapted from Haddad et al. (2017) Incorporation of stochastic engineering models as prior information in Bayesian medical device trials.  Journal of  Biopharmaceutical Statistics. 10: 1-15.
 
 ############################################################# Calculates posterior estimation for mu distribution# Given alpha_loss
 ############################################################# value and maximum strength of(N0_max) # prior if alpha_loss =1 #
